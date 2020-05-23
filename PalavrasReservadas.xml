@@ -1,0 +1,80 @@
+// Lista de Palavras Reservadas
+
+// Tipos
+<Tipos>
+char
+int
+long
+float
+double
+void
+</Tipos>
+
+// Complementos de Tipos
+<ComplementosTipos>
+const
+extern
+short
+signed
+unsigned
+volatile
+static
+register
+</ComplementosTipos>
+
+// Tipos Personalisados
+<PersonalizadosTipos>
+enum
+struct
+typedef
+union
+</PersonalizadosTipos>
+
+// Comandos Estruturados
+<Estruturas>
+switch
+case
+default
+
+do
+while
+
+if
+else
+
+for
+goto
+</Estruturas>
+
+// Outros Comandos
+<OutrosComandos>
+auto
+break
+continue
+return
+sizeof
+</OutrosComandos>
+
+// Lista de Caracteres Reservados
+<Caracteres>
+{
+}
+(
+)
+"
+'
+%
+&
+*
+/
+-
++
+.
+,
+;
+\
+=
+<
+>
+#
+</Caracteres>
