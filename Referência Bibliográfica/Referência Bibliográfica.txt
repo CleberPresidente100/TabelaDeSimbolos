@@ -1,0 +1,21 @@
+
+Estrutura de Dados - Árvores
+https://www.youtube.com/watch?v=eiMMtyRBYCE
+https://www.youtube.com/watch?v=7IKXYhqipK8
+https://www.youtube.com/watch?v=O4AqgoO42pc
+https://www.youtube.com/watch?v=3koM42vL6js
+https://www.youtube.com/watch?v=cbOtqNKNZHw
+
+
+Compiladores
+https://www.youtube.com/watch?v=ACArK9bPwZE&list=PLWPirh4EWFpH0W_3IQvvedUh3GaPnMUTT
+https://www.youtube.com/watch?v=0hU5-aLtaxo&list=PLWPirh4EWFpGa0qAEcNGJo2HSRC5_KMT6
+https://www.tutorialspoint.com/compiler_design/index.htm
+https://www.tutorialspoint.com/compiler_design/compiler_design_symbol_table.htm
+https://www.youtube.com/watch?v=oyG_JfrbTCQ
+https://rosettacode.org/wiki/Compiler/lexical_analyzer
+https://www.guru99.com/compiler-design-lexical-analysis.html
+
+
+Verto
+	http://verto.sourceforge.net
