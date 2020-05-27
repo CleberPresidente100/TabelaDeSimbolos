@@ -16,7 +16,4 @@
 	#define LOCAL_DESCRICAO "Local"
 	
 	
-	// Constantes de Tipo
-	
-	// Constantes de ComplementosTipos
 #endif

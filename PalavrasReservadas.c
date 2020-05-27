@@ -10,6 +10,17 @@
 #include "AnalisadorLexico.h"
 #include "PalavrasReservadas.h"
 
+#define PRIMEIRA_LETRA_MAIUSCULA_VALIDA		65
+#define ULTIMA_LETRA_MAIUSCULA_VALIDA		90
+
+#define PRIMEIRA_LETRA_MINUSCULA_VALIDA		97
+#define ULTIMA_LETRA_MINUSCULA_VALIDA		122
+
+#define PRIMEIRO_NUMERO_VALIDO	48
+#define ULTIMO_NUMERO_VALIDO	57
+
+#define UNDERLINE	95
+
 
 TokenTypes dicionario[] =
 {
@@ -112,6 +123,9 @@ TokenTypes dicionarioSimbolosCompostos[] =
 };
 
 
+TokenTypes TokenInvalido = {.Token = "", .TokenName = "T_Invalido", .TokenType = "Invalido"};
+TokenTypes TokenIdentificador = {.Token = "", .TokenName = "T_Identificador", .TokenType = "Identificador"};
+
 
 TokenTypes TokenNulo = {.Token = NULL,	.TokenName = NULL,	.TokenType = NULL};
 
@@ -183,6 +197,63 @@ TokenTypes ProcurarSimbolo(char *string)
 	}
 	
 	return TokenNulo;
+}
+
+
+
+TokenTypes CriarTokenIdentificador(char *string)
+{
+	TokenTypes token;
+	
+	token = TokenIdentificador;
+	
+	while(*string)
+	{
+		strcpy (token.Token, string);
+		string++;
+	}
+	
+	return token;
+}
+
+
+
+TokenTypes CriarTokenInvalido(char *string)
+{
+	TokenTypes token;
+	
+	token = TokenInvalido;
+	
+	while(*string)
+	{
+		strcpy (token.Token, string);
+		string++;
+	}
+	
+	return token;
+}
+
+
+
+bollean VerificarIdentificador(char *string)
+{
+	while(*string)
+	{
+		if(
+			(*string >= PRIMEIRA_LETRA_MAIUSCULA_VALIDA) && (*string <= ULTIMA_LETRA_MAIUSCULA_VALIDA) ||
+			(*string >= PRIMEIRA_LETRA_MINUSCULA_VALIDA) && (*string <= ULTIMA_LETRA_MINUSCULA_VALIDA) ||
+			(*string >= PRIMEIRO_NUMERO_VALIDO) && (*string <= ULTIMO_NUMERO_VALIDO) ||
+			(*string == UNDERLINE)
+		)
+		{
+			string++;
+			continue;
+		}
+		
+		return FALSE;
+	}
+
+	return TRUE;
 }
 
 
