@@ -7,6 +7,7 @@
 
 #include "Arquivos.h"
 #include "AnalisadorLexico.h"
+#include "AnalisadorSintatico.h"
 #include "PalavrasReservadas.h"
 
 

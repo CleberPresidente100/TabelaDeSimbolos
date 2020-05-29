@@ -8,6 +8,7 @@
 
 #include "Arquivos.h"
 #include "AnalisadorLexico.h"
+#include "AnalisadorSintatico.h"
 #include "PalavrasReservadas.h"
 
 #define PRIMEIRA_LETRA_MAIUSCULA_VALIDA		65
@@ -22,112 +23,129 @@
 #define UNDERLINE	95
 
 
-TokenTypes dicionario[] =
+#define TIPO "Tipo"
+#define COMPLEMENTO_TIPO "ComplementoTipo"
+#define MODIFICADOR_TIPO "ModificadorTipo"
+#define TIPO_PERSONALIZADO "TipoPersonalizado"
+#define PALAVRA_RESERVADA "PalavraReservada"
+#define DIRETIVA "Diretiva"
+#define SIMBOLO "Simbolo"
+#define OPERADOR "Operador"
+#define COMENTARIO "Comentario"
+#define INVALIDO "Invalido"
+#define IDENTIFICADOR "Identificador"
+
+
+
+Tokens dicionario[] =
 {
-	// Tipos de Variáveis
-	{.Token = "int",	.TokenName = "T_Inteiro",	.TokenType = "Tipo"},
-	{.Token = "char",	.TokenName = "T_Caractere",	.TokenType = "Tipo"},
-	{.Token = "void",	.TokenName = "T_Vazio",		.TokenType = "Tipo"},
-	{.Token = "long",	.TokenName = "T_Longo",		.TokenType = "Tipo"},
-	{.Token = "float",	.TokenName = "T_Decimal",	.TokenType = "Tipo"},
-	{.Token = "double",	.TokenName = "T_Dobro",		.TokenType = "Tipo"},
+	// Tipos de VariÃ¡veis
+	{.Token = "int",	.TokenName = {.Name ="T_Inteiro",	.Id = T_Inteiro},	.TokenType = {.Name = TIPO, .Id = Tipo}},
+	{.Token = "char",	.TokenName = {.Name ="T_Caractere",	.Id = T_Caractere},	.TokenType = {.Name = TIPO, .Id = Tipo}},
+	{.Token = "void",	.TokenName = {.Name ="T_Vazio",		.Id = T_Vazio},		.TokenType = {.Name = TIPO, .Id = Tipo}},
+	{.Token = "long",	.TokenName = {.Name ="T_Longo", 	.Id = T_Longo},		.TokenType = {.Name = TIPO, .Id = Tipo}},
+	{.Token = "float",	.TokenName = {.Name ="T_Decimal",	.Id = T_Decimal},	.TokenType = {.Name = TIPO, .Id = Tipo}},
+	{.Token = "double",	.TokenName = {.Name ="T_Dobro",		.Id = T_Dobro},		.TokenType = {.Name = TIPO, .Id = Tipo}},
 	
 	
-	// Complementos dos Tipos de Variáveis
-	{.Token = "const",		.TokenName = "T_Constante",		.TokenType = "ComplementoTipo"},
-	{.Token = "short",		.TokenName = "T_Curto",			.TokenType = "ComplementoTipo"},
-	{.Token = "static",		.TokenName = "T_Estatico",		.TokenType = "ComplementoTipo"},
-	{.Token = "signed",		.TokenName = "T_Sinalizado",	.TokenType = "ComplementoTipo"},
-	{.Token = "unsigned",	.TokenName = "T_NaoSinalizado",	.TokenType = "ComplementoTipo"},
-	{.Token = "volatile",	.TokenName = "T_Volatil",		.TokenType = "ComplementoTipo"},
-	{.Token = "register",	.TokenName = "T_Registrador",	.TokenType = "ComplementoTipo"},
+	// Complementos de Tipo de VariÃ¡vel
+	{.Token = "short",		.TokenName = {.Name ="T_Curto", 		.Id = T_Curto},			.TokenType = {.Name = COMPLEMENTO_TIPO, .Id = ComplementoTipo}},
+	{.Token = "signed",		.TokenName = {.Name ="T_Sinalizado", 	.Id = T_Sinalizado},	.TokenType = {.Name = COMPLEMENTO_TIPO, .Id = ComplementoTipo}},
+	{.Token = "unsigned",	.TokenName = {.Name ="T_NaoSinalizado", .Id = T_NaoSinalizado},	.TokenType = {.Name = COMPLEMENTO_TIPO, .Id = ComplementoTipo}},
+	
+	
+	// Modificadores de Tipo de VariÃ¡vel
+	{.Token = "const",		.TokenName = {.Name ="T_Constante",		.Id = T_Constante},		.TokenType = {.Name = MODIFICADOR_TIPO, .Id = ModificadorTipo}},
+	{.Token = "volatile",	.TokenName = {.Name ="T_Volatil", 		.Id = T_Volatil},		.TokenType = {.Name = MODIFICADOR_TIPO, .Id = ModificadorTipo}},
+	{.Token = "register",	.TokenName = {.Name ="T_Registrador",	.Id = T_Registrador},	.TokenType = {.Name = MODIFICADOR_TIPO, .Id = ModificadorTipo}},
 	
 	
 	// Tipos Personalizados
-	{.Token = "enum",		.TokenName = "T_Enumeracao",	.TokenType = "TipoPersonalizado"},
-	{.Token = "union",		.TokenName = "T_Uniao",			.TokenType = "TipoPersonalizado"},
-	{.Token = "struct",		.TokenName = "T_Estrutura",		.TokenType = "TipoPersonalizado"},
-	{.Token = "typedef",	.TokenName = "T_DefinicaoTipo",	.TokenType = "TipoPersonalizado"},
+	{.Token = "enum",		.TokenName = {.Name ="T_Enumeracao", 	.Id = T_Enumeracao},	.TokenType = {.Name = TIPO_PERSONALIZADO, .Id = TipoPersonalizado}},
+	{.Token = "union",		.TokenName = {.Name ="T_Uniao", 		.Id = T_Uniao},			.TokenType = {.Name = TIPO_PERSONALIZADO, .Id = TipoPersonalizado}},
+	{.Token = "struct",		.TokenName = {.Name ="T_Estrutura", 	.Id = T_Estrutura},		.TokenType = {.Name = TIPO_PERSONALIZADO, .Id = TipoPersonalizado}},
+	{.Token = "typedef",	.TokenName = {.Name ="T_DefinicaoTipo", .Id = T_DefinicaoTipo},	.TokenType = {.Name = TIPO_PERSONALIZADO, .Id = TipoPersonalizado}},
 	
 	
 	// Palavras Reservadas
-	{.Token = "switch",		.TokenName = "T_Switch",	.TokenType = "PalavraReservada"},
-	{.Token = "case",		.TokenName = "T_Case",		.TokenType = "PalavraReservada"},
-	{.Token = "default",	.TokenName = "T_Default",	.TokenType = "PalavraReservada"},
-	{.Token = "do",			.TokenName = "T_Do",		.TokenType = "PalavraReservada"},
-	{.Token = "while",		.TokenName = "T_While",		.TokenType = "PalavraReservada"},
-	{.Token = "if",			.TokenName = "T_If",		.TokenType = "PalavraReservada"},
-	{.Token = "else",		.TokenName = "T_Else",		.TokenType = "PalavraReservada"},
-	{.Token = "for",		.TokenName = "T_For",		.TokenType = "PalavraReservada"},
-	{.Token = "goto",		.TokenName = "T_Goto",		.TokenType = "PalavraReservada"},
-	{.Token = "break",		.TokenName = "T_Break",		.TokenType = "PalavraReservada"},
-	{.Token = "continue",	.TokenName = "T_Continue",	.TokenType = "PalavraReservada"},
-	{.Token = "return",		.TokenName = "T_Return",	.TokenType = "PalavraReservada"},
+	{.Token = "switch",		.TokenName = {.Name ="T_Switch", 	.Id = T_Switch},	.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Token = "case",		.TokenName = {.Name ="T_Case", 		.Id = T_Case},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Token = "default",	.TokenName = {.Name ="T_Default",	.Id = T_Default},	.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Token = "do",			.TokenName = {.Name ="T_Do", 		.Id = T_Do},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Token = "while",		.TokenName = {.Name ="T_While", 	.Id = T_While},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Token = "if",			.TokenName = {.Name ="T_If", 		.Id = T_If},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Token = "else",		.TokenName = {.Name ="T_Else", 		.Id = T_Else},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Token = "for",		.TokenName = {.Name ="T_For", 		.Id = T_For},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Token = "goto",		.TokenName = {.Name ="T_Goto", 		.Id = T_Goto},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Token = "break",		.TokenName = {.Name ="T_Break", 	.Id = T_Break},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Token = "continue",	.TokenName = {.Name ="T_Continue", 	.Id = T_Continue},	.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Token = "return",		.TokenName = {.Name ="T_Return", 	.Id = T_Return},	.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
 	
 	
 	// Diretivas
-	{.Token = "#define",	.TokenName = "T_Define",	.TokenType = "Diretiva"},
-	{.Token = "#include",	.TokenName = "T_Include",	.TokenType = "Diretiva"},
+	{.Token = "#define",	.TokenName = {.Name ="T_Define",	.Id = T_Define},	.TokenType = {.Name = DIRETIVA, .Id = Diretiva}},
+	{.Token = "#include",	.TokenName = {.Name ="T_Include",	.Id = T_Include},	.TokenType = {.Name = DIRETIVA, .Id = Diretiva}}
 	
 };
 
 
 
-TokenTypes dicionarioSimbolosSimples[] =
+Tokens dicionarioSimbolosSimples[] =
 {	
-	// Símbolos
-	{.Token = "{",	.TokenName = "T_Chave_Abre",		.TokenType = "Simbolos"},
-	{.Token = "}",	.TokenName = "T_Chave_Fecha",		.TokenType = "Simbolos"},
-	{.Token = "(",	.TokenName = "T_Parentese_Abre",	.TokenType = "Simbolos"},
-	{.Token = ")",	.TokenName = "T_Parentese_Fecha",	.TokenType = "Simbolos"},
-	{.Token = "[",	.TokenName = "T_Colchete_Abre",		.TokenType = "Simbolos"},
-	{.Token = "]",	.TokenName = "T_Colchete_Fecha",	.TokenType = "Simbolos"},
-	{.Token = "\"",	.TokenName = "T_AspaDupla",			.TokenType = "Simbolos"},
-	{.Token = "\'",	.TokenName = "T_AspaSimples",		.TokenType = "Simbolos"},
-	{.Token = ".",	.TokenName = "T_Ponto",				.TokenType = "Simbolos"},
-	{.Token = ",",	.TokenName = "T_Virgula",			.TokenType = "Simbolos"},
-	{.Token = ";",	.TokenName = "T_PentoVingula",		.TokenType = "Simbolos"},
+	// SÃ­mbolos
+	{.Token = "{",	.TokenName = {.Name ="T_Chave_Abre", 		.Id = T_Chave_Abre},		.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Token = "}",	.TokenName = {.Name ="T_Chave_Fecha", 		.Id = T_Chave_Fecha},		.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Token = "(",	.TokenName = {.Name ="T_Parentese_Abre", 	.Id = T_Parentese_Abre},	.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Token = ")",	.TokenName = {.Name ="T_Parentese_Fecha",	.Id = T_Parentese_Fecha},	.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Token = "[",	.TokenName = {.Name ="T_Colchete_Abre", 	.Id = T_Colchete_Abre},		.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Token = "]",	.TokenName = {.Name ="T_Colchete_Fecha", 	.Id = T_Colchete_Fecha},	.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Token = "\"",	.TokenName = {.Name ="T_AspaDupla", 		.Id = T_AspaDupla},			.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Token = "\'",	.TokenName = {.Name ="T_AspaSimples", 		.Id = T_AspaSimples},		.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Token = ".",	.TokenName = {.Name ="T_Ponto", 			.Id = T_Ponto},				.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Token = ",",	.TokenName = {.Name ="T_Virgula", 			.Id = T_Virgula},			.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Token = ";",	.TokenName = {.Name ="T_PontoVingula", 		.Id = T_PontoVingula},		.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Token = "\\",	.TokenName = {.Name ="T_Barra", 			.Id = T_Barra},				.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
 	
 	
 	// Operadores
-	{.Token = "*",	.TokenName = "T_Multiplicacao",	.TokenType = "Operador"},
-	{.Token = "+",	.TokenName = "T_Soma",			.TokenType = "Operador"},
-	{.Token = "/",	.TokenName = "T_Divisao",		.TokenType = "Operador"},
-	{.Token = "-",	.TokenName = "T_Subtracao",		.TokenType = "Operador"},
-	{.Token = "%",	.TokenName = "T_Modulo",		.TokenType = "Operador"},
-	{.Token = ">",	.TokenName = "T_MaiorQ",		.TokenType = "Operador"},
-	{.Token = "<",	.TokenName = "T_MenorQ",		.TokenType = "Operador"},
+	{.Token = "*",	.TokenName = {.Name ="T_Multiplicacao", .Id = T_Multiplicacao},	.TokenType = {.Name = OPERADOR, .Id = Operador}},
+	{.Token = "+",	.TokenName = {.Name ="T_Soma", 			.Id = T_Soma},			.TokenType = {.Name = OPERADOR, .Id = Operador}},
+	{.Token = "/",	.TokenName = {.Name ="T_Divisao", 		.Id = T_Divisao},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
+	{.Token = "-",	.TokenName = {.Name ="T_Subtracao", 	.Id = T_Subtracao},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
+	{.Token = "%",	.TokenName = {.Name ="T_Modulo", 		.Id = T_Modulo},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
+	{.Token = ">",	.TokenName = {.Name ="T_MaiorQ", 		.Id = T_MaiorQ},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
+	{.Token = "<",	.TokenName = {.Name ="T_MenorQ", 		.Id = T_MenorQ},		.TokenType = {.Name = OPERADOR, .Id = Operador}}
 	
 };
 
 
 
-TokenTypes dicionarioSimbolosCompostos[] =
+Tokens dicionarioSimbolosCompostos[] =
 {
 	// Operadores	
-	{.Token = ">=",	.TokenName = "T_MaiorIgualQ",	.TokenType = "Operador"},
-	{.Token = "<=",	.TokenName = "T_MenorIgualQ",	.TokenType = "Operador"},
-	{.Token = "==",	.TokenName = "T_Igual",			.TokenType = "Operador"},
-	{.Token = "!=",	.TokenName = "T_Diferente",		.TokenType = "Operador"},
-	{.Token = "=",	.TokenName = "T_Atribuicao",	.TokenType = "Operador"},
-	{.Token = "!",	.TokenName = "T_Negacao",		.TokenType = "Operador"},
-	{.Token = "&&",	.TokenName = "T_E_Logico",		.TokenType = "Operador"},
-	{.Token = "||",	.TokenName = "T_Ou_Logico",		.TokenType = "Operador"},
+	{.Token = ">=",	.TokenName = {.Name ="T_MaiorIgualQ", 	.Id = T_MaiorIgualQ},	.TokenType = {.Name = OPERADOR, .Id = Operador}},
+	{.Token = "<=",	.TokenName = {.Name ="T_MenorIgualQ", 	.Id = T_MenorIgualQ},	.TokenType = {.Name = OPERADOR, .Id = Operador}},
+	{.Token = "==",	.TokenName = {.Name ="T_Igual", 		.Id = T_Igual},			.TokenType = {.Name = OPERADOR, .Id = Operador}},
+	{.Token = "!=",	.TokenName = {.Name ="T_Diferente", 	.Id = T_Diferente},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
+	{.Token = "=",	.TokenName = {.Name ="T_Atribuicao", 	.Id = T_Atribuicao},	.TokenType = {.Name = OPERADOR, .Id = Operador}},
+	{.Token = "!",	.TokenName = {.Name ="T_Negacao", 		.Id = T_Negacao},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
+	{.Token = "&&",	.TokenName = {.Name ="T_E_Logico", 		.Id = T_E_Logico},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
+	{.Token = "||",	.TokenName = {.Name ="T_Ou_Logico", 	.Id = T_Ou_Logico},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
 	
 	
-	// Comentários
-	{.Token = "//", .TokenName = "T_Comentario_Linha",	.TokenType = "Comentario"},
-	{.Token = "/*", .TokenName = "T_Comentario_Inicio",	.TokenType = "Comentario"},
-	{.Token = "*/", .TokenName = "T_Comentario_Fim",	.TokenType = "Comentario"},
+	// ComentÃ¡rios
+	{.Token = "//", .TokenName = {.Name ="T_Comentario_Linha",	.Id = T_Comentario_Linha},	.TokenType = {.Name = COMENTARIO, .Id = Comentario}},
+	{.Token = "/*", .TokenName = {.Name ="T_Comentario_Inicio", .Id = T_Comentario_Inicio},	.TokenType = {.Name = COMENTARIO, .Id = Comentario}},
+	{.Token = "*/", .TokenName = {.Name ="T_Comentario_Fim",	.Id = T_Comentario_Fim},	.TokenType = {.Name = COMENTARIO, .Id = Comentario}},
 	
 };
 
 
-TokenTypes TokenInvalido = {.Token = "", .TokenName = "T_Invalido", .TokenType = "Invalido"};
-TokenTypes TokenIdentificador = {.Token = "", .TokenName = "T_Identificador", .TokenType = "Identificador"};
+Tokens TokenInvalido = {.Token = "", .TokenName = {.Name ="T_Invalido", .Id = T_Invalido}, .TokenType = {.Name = INVALIDO, .Id = Invalido}};
 
+Tokens TokenIdentificador = {.Token = "", .TokenName = {.Name ="T_Identificador", .Id = T_Identificador},	.TokenType = {.Name = IDENTIFICADOR, .Id = Identificador}};
 
-TokenTypes TokenNulo = {.Token = NULL,	.TokenName = NULL,	.TokenType = NULL};
+Tokens TokenNulo = {.Token = NULL,	.TokenName = {.Name ="", .Id = 0},	.TokenType = {.Name ="", .Id = 0}};
 
 
 
@@ -135,10 +153,10 @@ TokenTypes TokenNulo = {.Token = NULL,	.TokenName = NULL,	.TokenType = NULL};
 void CriarDicionario()
 {
 	int x = 0;
-	
+		
 	while(dicionario[x].Token)
 	{
-		printf("\n %s - %s - %s", dicionario[x].Token, dicionario[x].TokenName, dicionario[x].TokenType);
+		printf("\n %s - %s - %s", dicionario[x].Token, dicionario[x].TokenName.Name, dicionario[x].TokenType.Name);
 		x++;
 	}
 	
@@ -146,7 +164,7 @@ void CriarDicionario()
 
 
 
-TokenTypes ProcurarPalavraReservada(char *string)
+Tokens ProcurarPalavraReservada(char *string)
 {
 	unsigned int indice = 0;
 	
@@ -166,12 +184,12 @@ TokenTypes ProcurarPalavraReservada(char *string)
 
 
 
-TokenTypes ProcurarSimbolo(char *string)
+Tokens ProcurarSimbolo(char *string)
 {
 	char auxiliar;
 	unsigned int indice = 0;
 	
-	// Primeiro Procura dentre os Símbolos Compostos
+	// Primeiro Procura dentre os SÃ­mbolos Compostos
 	while(dicionarioSimbolosCompostos[indice].Token != NULL)
 	{
 		if(strcmp (dicionarioSimbolosCompostos[indice].Token, string) == 0)
@@ -183,7 +201,7 @@ TokenTypes ProcurarSimbolo(char *string)
 	}
 	
 	
-	// Para só então Procurar dentre os Símbolos Simples
+	// Para sÃ³ entÃ£o Procurar dentre os SÃ­mbolos Simples
 	indice = 0;
 	auxiliar = *string;
 	while(dicionarioSimbolosSimples[indice].Token != NULL)
@@ -201,9 +219,9 @@ TokenTypes ProcurarSimbolo(char *string)
 
 
 
-TokenTypes CriarTokenIdentificador(char *string)
+Tokens CriarTokenIdentificador(char *string)
 {
-	TokenTypes token;
+	Tokens token;
 	
 	token = TokenIdentificador;
 	
@@ -218,9 +236,9 @@ TokenTypes CriarTokenIdentificador(char *string)
 
 
 
-TokenTypes CriarTokenInvalido(char *string)
+Tokens CriarTokenInvalido(char *string)
 {
-	TokenTypes token;
+	Tokens token;
 	
 	token = TokenInvalido;
 	
@@ -235,7 +253,7 @@ TokenTypes CriarTokenInvalido(char *string)
 
 
 
-bollean VerificarIdentificador(char *string)
+boolean VerificarIdentificador(char *string)
 {
 	while(*string)
 	{

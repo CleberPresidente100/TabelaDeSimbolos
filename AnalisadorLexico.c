@@ -8,6 +8,7 @@
 
 #include "Arquivos.h"
 #include "AnalisadorLexico.h"
+#include "AnalisadorSintatico.h"
 #include "PalavrasReservadas.h"
 
 #define TAMANHO_DO_BUFFER 100
@@ -25,7 +26,7 @@ void RealizarAnaliseLexica()
 	int indice = 0;
 	char caractereLido[] = {0, 0, 0};
 	
-	TokenTypes tokenSimbolo;
+	Tokens tokenSimbolo;
 	char tokenLido[TAMANHO_DO_BUFFER];
 	
 	
@@ -33,30 +34,30 @@ void RealizarAnaliseLexica()
 	caractereLido[0] = LerCaractereDoArquivo(); // Efetua a Leitura do Primeiro Caractere do Arquivo
 	
 	
-	// Looping para Ler o Arquivo atÈ chegar ao seu fim.
+	// Looping para Ler o Arquivo atÔøΩ chegar ao seu fim.
 	do
 	{
 		coluna++;		
-		caractereLido[1] = LerCaractereDoArquivo(); // Efetua a Leitura do PrÛximo Caractere do Arquivo		
+		caractereLido[1] = LerCaractereDoArquivo(); // Efetua a Leitura do PrÔøΩximo Caractere do Arquivo		
 		
-		// Verifica se o Caractere È um SÌmbolo		
+		// Verifica se o Caractere ÔøΩ um SÔøΩmbolo		
 		tokenSimbolo = ProcurarSimbolo(&caractereLido[0]); 
 		if(tokenSimbolo.Token != NULL)
 		{
-			ProcessaTokenLido(&tokenLido[0]); // Se for um SÌmbolo, Processa o Token existente antes do SÌmbolo.
-			ProcessaTokenSimboloLido(tokenSimbolo.Token); // Agora, Processa o SÌmbolo.
+			ProcessaTokenLido(&tokenLido[0]); // Se for um SÔøΩmbolo, Processa o Token existente antes do SÔøΩmbolo.
+			ProcessaTokenSimboloLido(tokenSimbolo); // Agora, Processa o SÔøΩmbolo.
 			
 			LimparString(&tokenLido[0]); // Limpa Token Lido					
 			DeslocaVetor(&caractereLido[0]); // Efetua o Deslocamento para a Esquerda no Vetor
 			
-			// Caso o SÌmbolo seja Composto È necess·rio Apagar o Segundo Caractere tambÈm.
+			// Caso o SÔøΩmbolo seja Composto ÔøΩ necessÔøΩrio Apagar o Segundo Caractere tambÔøΩm.
 			if(SizeOf(tokenSimbolo.Token) > 1)
 			{
 				coluna++;
 				DeslocaVetor(&caractereLido[0]);
 			}
 			
-			indice = 0; // Reinicia Õndice
+			indice = 0; // Reinicia ÔøΩndice
 			continue; // Continua Processo de Leitura
 		}
 				
@@ -93,7 +94,7 @@ void RealizarAnaliseLexica()
 			
 			LimparString(&tokenLido[0]); // Limpa Token Lido
 			DeslocaVetor(&caractereLido[0]); // Efetua o Deslocamento para a Esquerda no Vetor						
-			indice = 0; // Reinicia Õndice
+			indice = 0; // Reinicia ÔøΩndice
 			continue; // Continua Processo de Leitura
 		}
 		
@@ -124,38 +125,38 @@ void LimparString(char *string)
 
 void AnalisaTokenLido(char *string)
 {
-	TokenTypes token;
+	Tokens token;
 	
 	token = ProcurarPalavraReservada(string);
 	
 	if(token.Token == NULL)
-		printf("\n\n Token n„o Encontrado ! \n\n");
+		printf("\n\n Token nÔøΩo Encontrado ! \n\n");
 	else
-		printf("\n\n Token = %s | TokenName = %s | TokenType = %s \n\n", token.Token, token.TokenName, token.TokenType);
+		printf("\n\n Token = %s | TokenName = %s | TokenType = %s \n\n", token.Token, token.TokenName.Name, token.TokenType.Name);
 }
 
 
 
 void ProcessaTokenLido(char *string)
 {
-	TokenTypes token;
+	Tokens token;
 		
-	// Verifica se a String È uma string vazia.
+	// Verifica se a String √© uma string vazia.
 	if(SizeOf(string) > 0)
 	{
-		// Verifica se o Token È uma Palavra Reservada
+		// Verifica se o Token √© uma Palavra Reservada
 		token = ProcurarPalavraReservada(string);
 		if(token.Token == NULL)
 		{	
-			// Verifica se o Token È um Identificador V·lido
+			// Verifica se o Token √© um Identificador V√°lido
 			if(VerificarIdentificador(string))
 			{				
 				token = CriarTokenIdentificador(string); // Cria um Token Identificador
 			}
 			else
 			{
-				token = CriarTokenInvalido(string); // Cria um Token Inv·lido
-				// N„o sendo, Adiciona um Erro na Tabela de Erros
+				token = CriarTokenInvalido(string); // Cria um Token Inv√°lido
+				// N√£o sendo, Adiciona um Erro na Tabela de Erros
 			}
 		}
 		
@@ -168,7 +169,7 @@ void ProcessaTokenLido(char *string)
 
 
 
-void ProcessaTokenSimboloLido(TokenTypes *token)
+void ProcessaTokenSimboloLido(Tokens token)
 {
 		
 	// Adiciona o Token na Tabela de Tokens

@@ -9,7 +9,7 @@
 	void DeslocaVetor(char *string);
 	unsigned int SizeOf(char *string);
 	void ProcessaTokenLido(char *string);
-	void ProcessaTokenSimboloLido(TokenTypes *token);
+	void ProcessaTokenSimboloLido(Tokens token);
 	
 #endif	
 

@@ -4,11 +4,11 @@
 	#define PALAVRAS_RESERVADAS 1
 		
 	void CriarDicionario();
-	TokenTypes ProcurarSimbolo(char *string);
-	TokenTypes ProcurarPalavraReservada(char *string);
-	TokenTypes CriarTokenIdentificador(char *string);
+	Tokens ProcurarSimbolo(char *string);
+	Tokens ProcurarPalavraReservada(char *string);
+	Tokens CriarTokenIdentificador(char *string);
 	boolean VerificarIdentificador(char *string);
-	TokenTypes CriarTokenInvalido(char *string);
+	Tokens CriarTokenInvalido(char *string);
 
 #endif
 
