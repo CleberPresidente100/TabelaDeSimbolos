@@ -1,15 +1,29 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-#include "Constantes.h"
-#include "EstruturasTipos.h"
+#include "Bibliotecas.h"
 
-#include "Arquivos.h"
-#include "AnalisadorLexico.h"
-#include "AnalisadorSintatico.h"
-#include "PalavrasReservadas.h"
+
+TabelaSimbolos *tabelaDeSimbolos = NULL;
 
 
 
+TabelaSimbolos* GetTabelaSimbolos()
+{
+	return tabelaDeSimbolos;
+}
+
+
+
+void LiberarMemoriaTabelaSimbolos()
+{
+	free(tabelaDeSimbolos);
+}
+	
+	
+	
+	
+	
+	
+	

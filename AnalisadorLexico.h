@@ -2,14 +2,14 @@
 
 #ifndef ANALISADOR_LEXICO
 	#define ANALISADOR_LEXICO 1
-	
-	
-	void RealizarAnaliseLexica();
+		
 	void LimparString(char *string);
 	void DeslocaVetor(char *string);
 	unsigned int SizeOf(char *string);
-	void ProcessaTokenLido(char *string);
-	void ProcessaTokenSimboloLido(Tokens token);
+	void RealizarAnaliseLexica();
+	void ProcessaLexemaLido(char *string, unsigned int linha, unsigned int coluna);
+	void AdicionaLexemaListaTokens(Lexemas lexema, Tokens *listaTokens);
+	void AdicionaLexemaListaErros(Lexemas lexema, Erros *listaErros, unsigned int linha, unsigned int coluna, char* MensagemErro);
 	
 #endif	
 

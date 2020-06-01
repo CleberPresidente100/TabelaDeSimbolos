@@ -2,8 +2,7 @@
 
 #ifndef CONSTANTES
 	#define CONSTANTES 1
-	
-	
+		
 	// Constantes Booleanas
 	#define TRUE 1
 	#define FALSE 0

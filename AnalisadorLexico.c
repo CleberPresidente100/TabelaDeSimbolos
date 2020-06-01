@@ -1,15 +1,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-#include "Constantes.h"
-#include "EstruturasTipos.h"
+#include "Bibliotecas.h"
 
-#include "Arquivos.h"
-#include "AnalisadorLexico.h"
-#include "AnalisadorSintatico.h"
-#include "PalavrasReservadas.h"
 
 #define TAMANHO_DO_BUFFER 100
 
@@ -26,38 +20,38 @@ void RealizarAnaliseLexica()
 	int indice = 0;
 	char caractereLido[] = {0, 0, 0};
 	
-	Tokens tokenSimbolo;
-	char tokenLido[TAMANHO_DO_BUFFER];
+	Lexemas lexemaSimbolo;
+	char lexemaLido[TAMANHO_DO_BUFFER];
 	
 	
-	LimparString(&tokenLido[0]); // Inicializa Vetor	
+	LimparString(&lexemaLido[0]); // Inicializa Vetor	
 	caractereLido[0] = LerCaractereDoArquivo(); // Efetua a Leitura do Primeiro Caractere do Arquivo
 	
 	
-	// Looping para Ler o Arquivo atÔøΩ chegar ao seu fim.
+	// Looping para Ler o Arquivo atÈ chegar ao seu fim.
 	do
 	{
 		coluna++;		
-		caractereLido[1] = LerCaractereDoArquivo(); // Efetua a Leitura do PrÔøΩximo Caractere do Arquivo		
+		caractereLido[1] = LerCaractereDoArquivo(); // Efetua a Leitura do PrÛximo Caractere do Arquivo		
 		
-		// Verifica se o Caractere ÔøΩ um SÔøΩmbolo		
-		tokenSimbolo = ProcurarSimbolo(&caractereLido[0]); 
-		if(tokenSimbolo.Token != NULL)
+		// Verifica se o Caractere È um SÌmbolo		
+		lexemaSimbolo = ProcurarSimbolo(&caractereLido[0]); 
+		if(lexemaSimbolo.Lexema != NULL)
 		{
-			ProcessaTokenLido(&tokenLido[0]); // Se for um SÔøΩmbolo, Processa o Token existente antes do SÔøΩmbolo.
-			ProcessaTokenSimboloLido(tokenSimbolo); // Agora, Processa o SÔøΩmbolo.
+			ProcessaLexemaLido(&lexemaLido[0], linha, coluna); // Se for um SÌmbolo, Processa o Lexema existente antes do SÌmbolo.
+			AdicionarLexemaListaTokens(lexemaSimbolo); // Agora, Processa o SÌmbolo.
 			
-			LimparString(&tokenLido[0]); // Limpa Token Lido					
+			LimparString(&lexemaLido[0]); // Limpa Lexema Lido					
 			DeslocaVetor(&caractereLido[0]); // Efetua o Deslocamento para a Esquerda no Vetor
 			
-			// Caso o SÔøΩmbolo seja Composto ÔøΩ necessÔøΩrio Apagar o Segundo Caractere tambÔøΩm.
-			if(SizeOf(tokenSimbolo.Token) > 1)
+			// Caso o SÌmbolo seja Composto È necess·rio Apagar o Segundo Caractere tambÈm.
+			if(SizeOf(lexemaSimbolo.Lexema) > 1)
 			{
 				coluna++;
 				DeslocaVetor(&caractereLido[0]);
 			}
 			
-			indice = 0; // Reinicia ÔøΩndice
+			indice = 0; // Reinicia Õndice
 			continue; // Continua Processo de Leitura
 		}
 				
@@ -90,20 +84,20 @@ void RealizarAnaliseLexica()
 			}
 			
 			
-			ProcessaTokenLido(&tokenLido[0]); // Processa o Token
+			ProcessaLexemaLido(&lexemaLido[0], linha, coluna); // Processa o Token
 			
-			LimparString(&tokenLido[0]); // Limpa Token Lido
+			LimparString(&lexemaLido[0]); // Limpa Token Lido
 			DeslocaVetor(&caractereLido[0]); // Efetua o Deslocamento para a Esquerda no Vetor						
-			indice = 0; // Reinicia ÔøΩndice
+			indice = 0; // Reinicia Õndice
 			continue; // Continua Processo de Leitura
 		}
 		
 		
-		tokenLido[indice] = caractereLido[0]; // Adiciona Caractere ao Token Lido
+		lexemaLido[indice] = caractereLido[0]; // Adiciona Caractere ao Token Lido
 		DeslocaVetor(&caractereLido[0]); // Efetua o Deslocamento para a Esquerda no Vetor
-		indice++; // Incrementa indice
+		indice++; // Incrementa Õndice
 		
-	} while(caractereLido[0] != EOF);
+	} while(caractereLido[0] != EOF && caractereLido[1] != EOF);
 	
 }
 
@@ -123,57 +117,31 @@ void LimparString(char *string)
 
 
 
-void AnalisaTokenLido(char *string)
+void ProcessaLexemaLido(char *string, unsigned int linha, unsigned int coluna)
 {
-	Tokens token;
-	
-	token = ProcurarPalavraReservada(string);
-	
-	if(token.Token == NULL)
-		printf("\n\n Token nÔøΩo Encontrado ! \n\n");
-	else
-		printf("\n\n Token = %s | TokenName = %s | TokenType = %s \n\n", token.Token, token.TokenName.Name, token.TokenType.Name);
-}
-
-
-
-void ProcessaTokenLido(char *string)
-{
-	Tokens token;
+	Lexemas lexema;
 		
-	// Verifica se a String √© uma string vazia.
+	// Verifica se a String È uma string vazia.
 	if(SizeOf(string) > 0)
 	{
-		// Verifica se o Token √© uma Palavra Reservada
-		token = ProcurarPalavraReservada(string);
-		if(token.Token == NULL)
+		// Verifica se o Token È uma Palavra Reservada
+		lexema = ProcurarPalavraReservada(string);
+		if(lexema.Lexema == NULL)
 		{	
-			// Verifica se o Token √© um Identificador V√°lido
+			// Verifica se o Token È um Identificador V·lido
 			if(VerificarIdentificador(string))
 			{				
-				token = CriarTokenIdentificador(string); // Cria um Token Identificador
+				lexema = CriarTokenIdentificador(string); // Cria um Token Identificador
 			}
 			else
 			{
-				token = CriarTokenInvalido(string); // Cria um Token Inv√°lido
-				// N√£o sendo, Adiciona um Erro na Tabela de Erros
+				lexema = CriarTokenInvalido(); // Cria um Token Inv·lido				
+				AdicionarLexemaListaErros(lexema, linha, coluna, "Erro"); // N„o sendo, Adiciona um Erro na Tabela de Erros
 			}
 		}
-		
-		// Adiciona o Token na Tabela de Tokens
-	}
-	
-	
-	return;
-}
-
-
-
-void ProcessaTokenSimboloLido(Tokens token)
-{
-		
-	// Adiciona o Token na Tabela de Tokens
-	
+				
+		AdicionarLexemaListaTokens(lexema); // Adiciona o Lexema na Tabela de Tokens
+	}	
 	
 	return;
 }

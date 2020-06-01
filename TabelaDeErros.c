@@ -1,14 +1,37 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-#include "Constantes.h"
-#include "EstruturasTipos.h"
+#include "Bibliotecas.h"
 
-#include "Arquivos.h"
-#include "AnalisadorLexico.h"
-#include "PalavrasReservadas.h"
+
+Erros *listaErros = NULL;
+
+
+
+void AdicionarLexemaListaErros(Lexemas lexema, unsigned int linha, unsigned int coluna, char* MensagemErro)
+{
+	return;
+}
+
+
+
+Erros* GetTabelaErros()
+{
+	return listaErros;
+}
+
+
+
+void LiberarMemoriaTabelaErros()
+{
+	free(listaErros);	
+}
+	
+	
+	
+	
+
 
 
 

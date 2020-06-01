@@ -23,6 +23,19 @@ void RealizarAnaliseSintatica()
 	// Verifica Tipo
 	
 	// Verifica Identificador
+
+	// PalavraReservada
+
+	// Diretiva
+
+	// Simbolos
+
+	// Operador
+
+	// Comentario
+
+	// Invalido
+
 }
 
 

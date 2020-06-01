@@ -2,31 +2,55 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Constantes.h"
-#include "EstruturasTipos.h"
+#include "Bibliotecas.h"
 
-#include "Arquivos.h"
-#include "AnalisadorLexico.h"
-#include "AnalisadorSintatico.h"
-#include "PalavrasReservadas.h"
-
-
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
 int main(int argc, char** argv) {
 	
 	char nomeDoArquivo[256];
 	boolean erroArquivo = FALSE;
 	
+	Tokens* token = NULL;
+	unsigned int tamanho;
 	
-	printf("\n Inicio\n");
-	CriarDicionario();
-	printf("\n\n Fim\n");
+	tamanho = sizeof(*token);
+	printf("\n Tamanho *token = %d", tamanho);
+	
+	tamanho = sizeof(token);
+	printf("\n Tamanho token = %d", tamanho);
+	
+	tamanho = sizeof(Tokens);
+	printf("\n Tamanho token = %d", tamanho);
+	/*
+	tamanho = sizeof(token.Anterior);
+	printf("\n Tamanho token.Anterior = %d", tamanho);
+	
+	tamanho = sizeof(token.Lexema);
+	printf("\n Tamanho token.Lexema = %d", tamanho);
+	
+	tamanho = sizeof(token.Lexema.Lexema);
+	printf("\n Tamanho token.Lexema.Lexema = %d", tamanho);
+	
+	tamanho = sizeof(token.Lexema.LexemaName);
+	printf("\n Tamanho token.Lexema.LexemaName = %d", tamanho);
+	
+	tamanho = sizeof(token.Lexema.LexemaName.Id);
+	printf("\n Tamanho token.Lexema.LexemaName.Id = %d", tamanho);
+	
+	tamanho = sizeof(token.Lexema.LexemaName.Name);
+	printf("\n Tamanho token.LexemaLexemaName.Name = %d", tamanho);
+	*/
 	
 	
-	/*printf("\n\n Digite o nome do arquivo: ");
+	
+	
+	
+	
+		
+	/*
+	printf("\n\n Digite o nome do arquivo: ");
 	scanf("%s", &nomeDoArquivo);
-	erroArquivo = AbrirArquivo(&nomeDoArquivo[0]);*/
+	erroArquivo = AbrirArquivo(&nomeDoArquivo[0]);
 	erroArquivo = AbrirArquivo("teste.txt");
 	if(erroArquivo == FALSE)
 	{
@@ -40,8 +64,16 @@ int main(int argc, char** argv) {
 	
 	
 	
-	
 	RealizarAnaliseLexica();
+	RealizarAnaliseSintatica();
+	//CriaArquivoTokens(listaTokens);
+	//CriaArquivoTabelaSimbolos(tabelaDeSimbolos);
+	//ExibirTabelaSimbolos();
+	
+	
+	LiberarMemoriaTabelaErros();
+	LiberarMemoriaTabelaTokens();
+	LiberarMemoriaTabelaSimbolos();
 	
 	
 	
@@ -59,5 +91,10 @@ int main(int argc, char** argv) {
 	}
 	
 	printf("\n\n\n");
-	return 0;
+	return 0;*/
 }
+
+
+
+
+

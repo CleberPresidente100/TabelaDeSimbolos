@@ -1,15 +1,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <strings.h>
 
-#include "Constantes.h"
-#include "EstruturasTipos.h"
+#include "Bibliotecas.h"
 
-#include "Arquivos.h"
-#include "AnalisadorLexico.h"
-#include "AnalisadorSintatico.h"
-#include "PalavrasReservadas.h"
 
 #define PRIMEIRA_LETRA_MAIUSCULA_VALIDA		65
 #define ULTIMA_LETRA_MAIUSCULA_VALIDA		90
@@ -37,141 +32,141 @@
 
 
 
-Tokens dicionario[] =
+Lexemas dicionario[] =
 {
-	// Tipos de VariÃ¡veis
-	{.Token = "int",	.TokenName = {.Name ="T_Inteiro",	.Id = T_Inteiro},	.TokenType = {.Name = TIPO, .Id = Tipo}},
-	{.Token = "char",	.TokenName = {.Name ="T_Caractere",	.Id = T_Caractere},	.TokenType = {.Name = TIPO, .Id = Tipo}},
-	{.Token = "void",	.TokenName = {.Name ="T_Vazio",		.Id = T_Vazio},		.TokenType = {.Name = TIPO, .Id = Tipo}},
-	{.Token = "long",	.TokenName = {.Name ="T_Longo", 	.Id = T_Longo},		.TokenType = {.Name = TIPO, .Id = Tipo}},
-	{.Token = "float",	.TokenName = {.Name ="T_Decimal",	.Id = T_Decimal},	.TokenType = {.Name = TIPO, .Id = Tipo}},
-	{.Token = "double",	.TokenName = {.Name ="T_Dobro",		.Id = T_Dobro},		.TokenType = {.Name = TIPO, .Id = Tipo}},
+	// Tipos de Variáveis
+	{.Lexema = "int",		.LexemaName = {.Name ="T_Inteiro",	.Id = T_Inteiro},	.LexemaType = {.Name = TIPO, .Id = Tipo}},
+	{.Lexema = "char",		.LexemaName = {.Name ="T_Caractere",.Id = T_Caractere},	.LexemaType = {.Name = TIPO, .Id = Tipo}},
+	{.Lexema = "void",		.LexemaName = {.Name ="T_Vazio",	.Id = T_Vazio},		.LexemaType = {.Name = TIPO, .Id = Tipo}},
+	{.Lexema = "long",		.LexemaName = {.Name ="T_Longo", 	.Id = T_Longo},		.LexemaType = {.Name = TIPO, .Id = Tipo}},
+	{.Lexema = "float",		.LexemaName = {.Name ="T_Decimal",	.Id = T_Decimal},	.LexemaType = {.Name = TIPO, .Id = Tipo}},
+	{.Lexema = "double",	.LexemaName = {.Name ="T_Dobro",	.Id = T_Dobro},		.LexemaType = {.Name = TIPO, .Id = Tipo}},
 	
 	
-	// Complementos de Tipo de VariÃ¡vel
-	{.Token = "short",		.TokenName = {.Name ="T_Curto", 		.Id = T_Curto},			.TokenType = {.Name = COMPLEMENTO_TIPO, .Id = ComplementoTipo}},
-	{.Token = "signed",		.TokenName = {.Name ="T_Sinalizado", 	.Id = T_Sinalizado},	.TokenType = {.Name = COMPLEMENTO_TIPO, .Id = ComplementoTipo}},
-	{.Token = "unsigned",	.TokenName = {.Name ="T_NaoSinalizado", .Id = T_NaoSinalizado},	.TokenType = {.Name = COMPLEMENTO_TIPO, .Id = ComplementoTipo}},
+	// Complementos de Tipo de Variável
+	{.Lexema = "short",		.LexemaName = {.Name ="T_Curto", 		.Id = T_Curto},			.LexemaType = {.Name = COMPLEMENTO_TIPO, .Id = ComplementoTipo}},
+	{.Lexema = "signed",	.LexemaName = {.Name ="T_Sinalizado", 	.Id = T_Sinalizado},	.LexemaType = {.Name = COMPLEMENTO_TIPO, .Id = ComplementoTipo}},
+	{.Lexema = "unsigned",	.LexemaName = {.Name ="T_NaoSinalizado",.Id = T_NaoSinalizado},	.LexemaType = {.Name = COMPLEMENTO_TIPO, .Id = ComplementoTipo}},
 	
 	
-	// Modificadores de Tipo de VariÃ¡vel
-	{.Token = "const",		.TokenName = {.Name ="T_Constante",		.Id = T_Constante},		.TokenType = {.Name = MODIFICADOR_TIPO, .Id = ModificadorTipo}},
-	{.Token = "volatile",	.TokenName = {.Name ="T_Volatil", 		.Id = T_Volatil},		.TokenType = {.Name = MODIFICADOR_TIPO, .Id = ModificadorTipo}},
-	{.Token = "register",	.TokenName = {.Name ="T_Registrador",	.Id = T_Registrador},	.TokenType = {.Name = MODIFICADOR_TIPO, .Id = ModificadorTipo}},
+	// Modificadores de Tipo de Variável
+	{.Lexema = "const",		.LexemaName = {.Name ="T_Constante",	.Id = T_Constante},		.LexemaType = {.Name = MODIFICADOR_TIPO, .Id = ModificadorTipo}},
+	{.Lexema = "volatile",	.LexemaName = {.Name ="T_Volatil", 		.Id = T_Volatil},		.LexemaType = {.Name = MODIFICADOR_TIPO, .Id = ModificadorTipo}},
+	{.Lexema = "register",	.LexemaName = {.Name ="T_Registrador",	.Id = T_Registrador},	.LexemaType = {.Name = MODIFICADOR_TIPO, .Id = ModificadorTipo}},
 	
 	
 	// Tipos Personalizados
-	{.Token = "enum",		.TokenName = {.Name ="T_Enumeracao", 	.Id = T_Enumeracao},	.TokenType = {.Name = TIPO_PERSONALIZADO, .Id = TipoPersonalizado}},
-	{.Token = "union",		.TokenName = {.Name ="T_Uniao", 		.Id = T_Uniao},			.TokenType = {.Name = TIPO_PERSONALIZADO, .Id = TipoPersonalizado}},
-	{.Token = "struct",		.TokenName = {.Name ="T_Estrutura", 	.Id = T_Estrutura},		.TokenType = {.Name = TIPO_PERSONALIZADO, .Id = TipoPersonalizado}},
-	{.Token = "typedef",	.TokenName = {.Name ="T_DefinicaoTipo", .Id = T_DefinicaoTipo},	.TokenType = {.Name = TIPO_PERSONALIZADO, .Id = TipoPersonalizado}},
+	{.Lexema = "enum",		.LexemaName = {.Name ="T_Enumeracao", 	.Id = T_Enumeracao},	.LexemaType = {.Name = TIPO_PERSONALIZADO, .Id = TipoPersonalizado}},
+	{.Lexema = "union",		.LexemaName = {.Name ="T_Uniao", 		.Id = T_Uniao},			.LexemaType = {.Name = TIPO_PERSONALIZADO, .Id = TipoPersonalizado}},
+	{.Lexema = "struct",	.LexemaName = {.Name ="T_Estrutura", 	.Id = T_Estrutura},		.LexemaType = {.Name = TIPO_PERSONALIZADO, .Id = TipoPersonalizado}},
+	{.Lexema = "typedef",	.LexemaName = {.Name ="T_DefinicaoTipo",.Id = T_DefinicaoTipo},	.LexemaType = {.Name = TIPO_PERSONALIZADO, .Id = TipoPersonalizado}},
 	
 	
 	// Palavras Reservadas
-	{.Token = "switch",		.TokenName = {.Name ="T_Switch", 	.Id = T_Switch},	.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
-	{.Token = "case",		.TokenName = {.Name ="T_Case", 		.Id = T_Case},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
-	{.Token = "default",	.TokenName = {.Name ="T_Default",	.Id = T_Default},	.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
-	{.Token = "do",			.TokenName = {.Name ="T_Do", 		.Id = T_Do},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
-	{.Token = "while",		.TokenName = {.Name ="T_While", 	.Id = T_While},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
-	{.Token = "if",			.TokenName = {.Name ="T_If", 		.Id = T_If},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
-	{.Token = "else",		.TokenName = {.Name ="T_Else", 		.Id = T_Else},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
-	{.Token = "for",		.TokenName = {.Name ="T_For", 		.Id = T_For},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
-	{.Token = "goto",		.TokenName = {.Name ="T_Goto", 		.Id = T_Goto},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
-	{.Token = "break",		.TokenName = {.Name ="T_Break", 	.Id = T_Break},		.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
-	{.Token = "continue",	.TokenName = {.Name ="T_Continue", 	.Id = T_Continue},	.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
-	{.Token = "return",		.TokenName = {.Name ="T_Return", 	.Id = T_Return},	.TokenType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Lexema = "switch",	.LexemaName = {.Name ="T_Switch", 	.Id = T_Switch},	.LexemaType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Lexema = "case",		.LexemaName = {.Name ="T_Case", 	.Id = T_Case},		.LexemaType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Lexema = "default",	.LexemaName = {.Name ="T_Default",	.Id = T_Default},	.LexemaType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Lexema = "do",		.LexemaName = {.Name ="T_Do", 		.Id = T_Do},		.LexemaType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Lexema = "while",		.LexemaName = {.Name ="T_While", 	.Id = T_While},		.LexemaType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Lexema = "if",		.LexemaName = {.Name ="T_If", 		.Id = T_If},		.LexemaType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Lexema = "else",		.LexemaName = {.Name ="T_Else", 	.Id = T_Else},		.LexemaType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Lexema = "for",		.LexemaName = {.Name ="T_For", 		.Id = T_For},		.LexemaType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Lexema = "goto",		.LexemaName = {.Name ="T_Goto", 	.Id = T_Goto},		.LexemaType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Lexema = "break",		.LexemaName = {.Name ="T_Break", 	.Id = T_Break},		.LexemaType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Lexema = "continue",	.LexemaName = {.Name ="T_Continue", .Id = T_Continue},	.LexemaType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
+	{.Lexema = "return",	.LexemaName = {.Name ="T_Return", 	.Id = T_Return},	.LexemaType = {.Name = PALAVRA_RESERVADA, .Id = PalavraReservada}},
 	
 	
 	// Diretivas
-	{.Token = "#define",	.TokenName = {.Name ="T_Define",	.Id = T_Define},	.TokenType = {.Name = DIRETIVA, .Id = Diretiva}},
-	{.Token = "#include",	.TokenName = {.Name ="T_Include",	.Id = T_Include},	.TokenType = {.Name = DIRETIVA, .Id = Diretiva}}
+	{.Lexema = "#define",	.LexemaName = {.Name ="T_Define",	.Id = T_Define},	.LexemaType = {.Name = DIRETIVA, .Id = Diretiva}},
+	{.Lexema = "#include",	.LexemaName = {.Name ="T_Include",	.Id = T_Include},	.LexemaType = {.Name = DIRETIVA, .Id = Diretiva}}
 	
 };
 
 
 
-Tokens dicionarioSimbolosSimples[] =
+Lexemas dicionarioSimbolosSimples[] =
 {	
-	// SÃ­mbolos
-	{.Token = "{",	.TokenName = {.Name ="T_Chave_Abre", 		.Id = T_Chave_Abre},		.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
-	{.Token = "}",	.TokenName = {.Name ="T_Chave_Fecha", 		.Id = T_Chave_Fecha},		.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
-	{.Token = "(",	.TokenName = {.Name ="T_Parentese_Abre", 	.Id = T_Parentese_Abre},	.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
-	{.Token = ")",	.TokenName = {.Name ="T_Parentese_Fecha",	.Id = T_Parentese_Fecha},	.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
-	{.Token = "[",	.TokenName = {.Name ="T_Colchete_Abre", 	.Id = T_Colchete_Abre},		.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
-	{.Token = "]",	.TokenName = {.Name ="T_Colchete_Fecha", 	.Id = T_Colchete_Fecha},	.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
-	{.Token = "\"",	.TokenName = {.Name ="T_AspaDupla", 		.Id = T_AspaDupla},			.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
-	{.Token = "\'",	.TokenName = {.Name ="T_AspaSimples", 		.Id = T_AspaSimples},		.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
-	{.Token = ".",	.TokenName = {.Name ="T_Ponto", 			.Id = T_Ponto},				.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
-	{.Token = ",",	.TokenName = {.Name ="T_Virgula", 			.Id = T_Virgula},			.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
-	{.Token = ";",	.TokenName = {.Name ="T_PontoVingula", 		.Id = T_PontoVingula},		.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
-	{.Token = "\\",	.TokenName = {.Name ="T_Barra", 			.Id = T_Barra},				.TokenType = {.Name = SIMBOLO, .Id = Simbolos}},
+	// Símbolos
+	{.Lexema = "{",		.LexemaName = {.Name ="T_Chave_Abre", 		.Id = T_Chave_Abre},		.LexemaType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Lexema = "}",		.LexemaName = {.Name ="T_Chave_Fecha", 		.Id = T_Chave_Fecha},		.LexemaType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Lexema = "(",		.LexemaName = {.Name ="T_Parentese_Abre", 	.Id = T_Parentese_Abre},	.LexemaType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Lexema = ")",		.LexemaName = {.Name ="T_Parentese_Fecha",	.Id = T_Parentese_Fecha},	.LexemaType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Lexema = "[",		.LexemaName = {.Name ="T_Colchete_Abre", 	.Id = T_Colchete_Abre},		.LexemaType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Lexema = "]",		.LexemaName = {.Name ="T_Colchete_Fecha", 	.Id = T_Colchete_Fecha},	.LexemaType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Lexema = "\"",	.LexemaName = {.Name ="T_AspaDupla", 		.Id = T_AspaDupla},			.LexemaType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Lexema = "\'",	.LexemaName = {.Name ="T_AspaSimples", 		.Id = T_AspaSimples},		.LexemaType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Lexema = ".",		.LexemaName = {.Name ="T_Ponto", 			.Id = T_Ponto},				.LexemaType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Lexema = ",",		.LexemaName = {.Name ="T_Virgula", 			.Id = T_Virgula},			.LexemaType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Lexema = ";",		.LexemaName = {.Name ="T_PontoVingula", 	.Id = T_PontoVingula},		.LexemaType = {.Name = SIMBOLO, .Id = Simbolos}},
+	{.Lexema = "\\",	.LexemaName = {.Name ="T_Barra", 			.Id = T_Barra},				.LexemaType = {.Name = SIMBOLO, .Id = Simbolos}},
 	
 	
 	// Operadores
-	{.Token = "*",	.TokenName = {.Name ="T_Multiplicacao", .Id = T_Multiplicacao},	.TokenType = {.Name = OPERADOR, .Id = Operador}},
-	{.Token = "+",	.TokenName = {.Name ="T_Soma", 			.Id = T_Soma},			.TokenType = {.Name = OPERADOR, .Id = Operador}},
-	{.Token = "/",	.TokenName = {.Name ="T_Divisao", 		.Id = T_Divisao},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
-	{.Token = "-",	.TokenName = {.Name ="T_Subtracao", 	.Id = T_Subtracao},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
-	{.Token = "%",	.TokenName = {.Name ="T_Modulo", 		.Id = T_Modulo},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
-	{.Token = ">",	.TokenName = {.Name ="T_MaiorQ", 		.Id = T_MaiorQ},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
-	{.Token = "<",	.TokenName = {.Name ="T_MenorQ", 		.Id = T_MenorQ},		.TokenType = {.Name = OPERADOR, .Id = Operador}}
+	{.Lexema = "*",	.LexemaName = {.Name ="T_Multiplicacao",.Id = T_Multiplicacao},	.LexemaType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = "+",	.LexemaName = {.Name ="T_Soma", 		.Id = T_Soma},			.LexemaType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = "/",	.LexemaName = {.Name ="T_Divisao", 		.Id = T_Divisao},		.LexemaType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = "-",	.LexemaName = {.Name ="T_Subtracao", 	.Id = T_Subtracao},		.LexemaType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = "%",	.LexemaName = {.Name ="T_Modulo", 		.Id = T_Modulo},		.LexemaType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = ">",	.LexemaName = {.Name ="T_MaiorQ", 		.Id = T_MaiorQ},		.LexemaType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = "<",	.LexemaName = {.Name ="T_MenorQ", 		.Id = T_MenorQ},		.LexemaType = {.Name = OPERADOR, .Id = Operador}}
 	
 };
 
 
 
-Tokens dicionarioSimbolosCompostos[] =
+Lexemas dicionarioSimbolosCompostos[] =
 {
 	// Operadores	
-	{.Token = ">=",	.TokenName = {.Name ="T_MaiorIgualQ", 	.Id = T_MaiorIgualQ},	.TokenType = {.Name = OPERADOR, .Id = Operador}},
-	{.Token = "<=",	.TokenName = {.Name ="T_MenorIgualQ", 	.Id = T_MenorIgualQ},	.TokenType = {.Name = OPERADOR, .Id = Operador}},
-	{.Token = "==",	.TokenName = {.Name ="T_Igual", 		.Id = T_Igual},			.TokenType = {.Name = OPERADOR, .Id = Operador}},
-	{.Token = "!=",	.TokenName = {.Name ="T_Diferente", 	.Id = T_Diferente},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
-	{.Token = "=",	.TokenName = {.Name ="T_Atribuicao", 	.Id = T_Atribuicao},	.TokenType = {.Name = OPERADOR, .Id = Operador}},
-	{.Token = "!",	.TokenName = {.Name ="T_Negacao", 		.Id = T_Negacao},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
-	{.Token = "&&",	.TokenName = {.Name ="T_E_Logico", 		.Id = T_E_Logico},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
-	{.Token = "||",	.TokenName = {.Name ="T_Ou_Logico", 	.Id = T_Ou_Logico},		.TokenType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = ">=",	.LexemaName = {.Name ="T_MaiorIgualQ", 	.Id = T_MaiorIgualQ},	.LexemaType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = "<=",	.LexemaName = {.Name ="T_MenorIgualQ", 	.Id = T_MenorIgualQ},	.LexemaType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = "==",	.LexemaName = {.Name ="T_Igual", 		.Id = T_Igual},			.LexemaType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = "!=",	.LexemaName = {.Name ="T_Diferente", 	.Id = T_Diferente},		.LexemaType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = "=",		.LexemaName = {.Name ="T_Atribuicao", 	.Id = T_Atribuicao},	.LexemaType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = "!",		.LexemaName = {.Name ="T_Negacao", 		.Id = T_Negacao},		.LexemaType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = "&&",	.LexemaName = {.Name ="T_E_Logico", 	.Id = T_E_Logico},		.LexemaType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = "||",	.LexemaName = {.Name ="T_Ou_Logico", 	.Id = T_Ou_Logico},		.LexemaType = {.Name = OPERADOR, .Id = Operador}},
 	
 	
-	// ComentÃ¡rios
-	{.Token = "//", .TokenName = {.Name ="T_Comentario_Linha",	.Id = T_Comentario_Linha},	.TokenType = {.Name = COMENTARIO, .Id = Comentario}},
-	{.Token = "/*", .TokenName = {.Name ="T_Comentario_Inicio", .Id = T_Comentario_Inicio},	.TokenType = {.Name = COMENTARIO, .Id = Comentario}},
-	{.Token = "*/", .TokenName = {.Name ="T_Comentario_Fim",	.Id = T_Comentario_Fim},	.TokenType = {.Name = COMENTARIO, .Id = Comentario}},
+	// Comentários
+	{.Lexema = "//", .LexemaName = {.Name ="T_Comentario_Linha",	.Id = T_Comentario_Linha},	.LexemaType = {.Name = COMENTARIO, .Id = Comentario}},
+	{.Lexema = "/*", .LexemaName = {.Name ="T_Comentario_Inicio",	.Id = T_Comentario_Inicio},	.LexemaType = {.Name = COMENTARIO, .Id = Comentario}},
+	{.Lexema = "*/", .LexemaName = {.Name ="T_Comentario_Fim",		.Id = T_Comentario_Fim},	.LexemaType = {.Name = COMENTARIO, .Id = Comentario}},
 	
 };
 
 
-Tokens TokenInvalido = {.Token = "", .TokenName = {.Name ="T_Invalido", .Id = T_Invalido}, .TokenType = {.Name = INVALIDO, .Id = Invalido}};
+Lexemas LexemaInvalido = {.Lexema = "", .LexemaName = {.Name ="T_Invalido", .Id = T_Invalido}, .LexemaType = {.Name = INVALIDO, .Id = Invalido}};
 
-Tokens TokenIdentificador = {.Token = "", .TokenName = {.Name ="T_Identificador", .Id = T_Identificador},	.TokenType = {.Name = IDENTIFICADOR, .Id = Identificador}};
+Lexemas LexemaIdentificador = {.Lexema = "", .LexemaName = {.Name ="T_Identificador", .Id = T_Identificador},	.LexemaType = {.Name = IDENTIFICADOR, .Id = Identificador}};
 
-Tokens TokenNulo = {.Token = NULL,	.TokenName = {.Name ="", .Id = 0},	.TokenType = {.Name ="", .Id = 0}};
+Lexemas LexemaNulo = {.Lexema = NULL,	.LexemaName = {.Name ="", .Id = 0},	.LexemaType = {.Name ="", .Id = 0}};
 
 
 
 
 void CriarDicionario()
 {
-	int x = 0;
+	// int x = 0;
 		
-	while(dicionario[x].Token)
-	{
-		printf("\n %s - %s - %s", dicionario[x].Token, dicionario[x].TokenName.Name, dicionario[x].TokenType.Name);
-		x++;
-	}
+	// while(dicionario[x].Token)
+	// {
+	// 	printf("\n %s - %s - %s", dicionario[x].Token, dicionario[x].LexemaName.Name, dicionario[x].LexemaType.Name);
+	// 	x++;
+	// }
 	
 }
 
 
 
-Tokens ProcurarPalavraReservada(char *string)
+Lexemas ProcurarPalavraReservada(char *string)
 {
 	unsigned int indice = 0;
 	
 	// Procura dentre as Palavras Reservadas
-	while(dicionario[indice].Token != NULL)
+	while(dicionario[indice].Lexema != NULL)
 	{
-		if(strcmp (dicionario[indice].Token, string) == 0)
+		if(strcmp (dicionario[indice].Lexema, string) == 0)
 		{
 			return dicionario[indice];
 		}
@@ -179,20 +174,20 @@ Tokens ProcurarPalavraReservada(char *string)
 		indice++;
 	}
 	
-	return TokenNulo;
+	return LexemaNulo;
 }
 
 
 
-Tokens ProcurarSimbolo(char *string)
+Lexemas ProcurarSimbolo(char *string)
 {
 	char auxiliar;
 	unsigned int indice = 0;
 	
-	// Primeiro Procura dentre os SÃ­mbolos Compostos
-	while(dicionarioSimbolosCompostos[indice].Token != NULL)
+	// Primeiro Procura dentre os Símbolos Compostos
+	while(dicionarioSimbolosCompostos[indice].Lexema != NULL)
 	{
-		if(strcmp (dicionarioSimbolosCompostos[indice].Token, string) == 0)
+		if(strcmp (dicionarioSimbolosCompostos[indice].Lexema, string) == 0)
 		{
 			return dicionarioSimbolosCompostos[indice];
 		}
@@ -201,12 +196,12 @@ Tokens ProcurarSimbolo(char *string)
 	}
 	
 	
-	// Para sÃ³ entÃ£o Procurar dentre os SÃ­mbolos Simples
+	// Para só então Procurar dentre os Símbolos Simples
 	indice = 0;
 	auxiliar = *string;
-	while(dicionarioSimbolosSimples[indice].Token != NULL)
+	while(dicionarioSimbolosSimples[indice].Lexema != NULL)
 	{
-		if(*dicionarioSimbolosSimples[indice].Token == auxiliar)
+		if(*dicionarioSimbolosSimples[indice].Lexema == auxiliar)
 		{
 			return dicionarioSimbolosSimples[indice];
 		}
@@ -214,55 +209,77 @@ Tokens ProcurarSimbolo(char *string)
 		indice++;
 	}
 	
-	return TokenNulo;
+	return LexemaNulo;
 }
 
 
 
-Tokens CriarTokenIdentificador(char *string)
+Lexemas CriarTokenIdentificador(char *string)
 {
-	Tokens token;
+	Lexemas lexema;
 	
-	token = TokenIdentificador;
+	lexema = LexemaIdentificador;
 	
-	while(*string)
-	{
-		strcpy (token.Token, string);
-		string++;
-	}
+	strcpy (lexema.Lexema, string);
 	
-	return token;
+	return lexema;
 }
 
 
 
-Tokens CriarTokenInvalido(char *string)
+Lexemas CriarTokenInvalido()
 {
-	Tokens token;
-	
-	token = TokenInvalido;
-	
-	while(*string)
-	{
-		strcpy (token.Token, string);
-		string++;
-	}
-	
-	return token;
+	return LexemaInvalido;
 }
 
 
 
 boolean VerificarIdentificador(char *string)
 {
+	// Verifica se o Primeiro Caractere do Identificador é válido
+	if(
+		!(*string >= PRIMEIRA_LETRA_MAIUSCULA_VALIDA && *string <= ULTIMA_LETRA_MAIUSCULA_VALIDA) &&
+		!(*string >= PRIMEIRA_LETRA_MINUSCULA_VALIDA && *string <= ULTIMA_LETRA_MINUSCULA_VALIDA) &&
+		!(*string == UNDERLINE)
+	)
+	{
+		return FALSE;
+	}
+	
+	string++;	
 	while(*string)
 	{
 		if(
-			(*string >= PRIMEIRA_LETRA_MAIUSCULA_VALIDA) && (*string <= ULTIMA_LETRA_MAIUSCULA_VALIDA) ||
-			(*string >= PRIMEIRA_LETRA_MINUSCULA_VALIDA) && (*string <= ULTIMA_LETRA_MINUSCULA_VALIDA) ||
-			(*string >= PRIMEIRO_NUMERO_VALIDO) && (*string <= ULTIMO_NUMERO_VALIDO) ||
+			(*string >= PRIMEIRA_LETRA_MAIUSCULA_VALIDA && *string <= ULTIMA_LETRA_MAIUSCULA_VALIDA) ||
+			(*string >= PRIMEIRA_LETRA_MINUSCULA_VALIDA && *string <= ULTIMA_LETRA_MINUSCULA_VALIDA) ||
+			(*string >= PRIMEIRO_NUMERO_VALIDO && *string <= ULTIMO_NUMERO_VALIDO) ||
 			(*string == UNDERLINE)
 		)
+		{
+			string++;
+			continue;
+		}
+		
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+
+
+boolean VerificarIdentificadorNumerico(char *string)
+{
+	// Verifica se o Primeiro Caractere do Identificador Numérico é um Número
+	if(!(*string >= PRIMEIRO_NUMERO_VALIDO && *string <= ULTIMO_NUMERO_VALIDO))
+	{
+		return FALSE;
+	}
+	
+	string++;
+	while(*string)
+	{
+		if(*string >= PRIMEIRO_NUMERO_VALIDO && *string <= ULTIMO_NUMERO_VALIDO)
 		{
 			string++;
 			continue;

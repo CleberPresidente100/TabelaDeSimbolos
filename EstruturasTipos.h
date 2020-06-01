@@ -6,7 +6,7 @@
 	
 	enum Enums {
 
-		// Tipos de VariÃ¡veis
+		// Tipos de Variáveis
 		T_Inteiro = 1,
 		T_Caractere,
 		T_Vazio,
@@ -14,12 +14,12 @@
 		T_Decimal,
 		T_Dobro,	
 	
-		// Complementos de Tipo de VariÃ¡vel
+		// Complementos de Tipo de Variável
 		T_Curto,
 		T_Sinalizado,
 		T_NaoSinalizado,	
 	
-		// Modificadores de Tipo de VariÃ¡vel
+		// Modificadores de Tipo de Variável
 		T_Constante,
 		T_Volatil,
 		T_Registrador,	
@@ -48,7 +48,7 @@
 		T_Define,
 		T_Include,
 
-		// SÃ­mbolos
+		// Símbolos
 		T_Chave_Abre,
 		T_Chave_Fecha,
 		T_Parentese_Abre,
@@ -79,7 +79,7 @@
 		T_E_Logico,
 		T_Ou_Logico,		
 		
-		// ComentÃ¡rios
+		// Comentários
 		T_Comentario_Linha,
 		T_Comentario_Inicio,
 		T_Comentario_Fim,
@@ -115,18 +115,40 @@
 	typedef struct KEY_VALUE_PAIR KeyValuePair;
 	
 	
-	// Estrutura do Token
+	// Estrutura do Lexema
+	struct LEXEMAS
+	{
+		char* Lexema;
+		KeyValuePair LexemaName;
+		KeyValuePair LexemaType;
+	};
+	typedef struct LEXEMAS Lexemas;
+	
+	
+	// Estrutura da Lista de Tokens
 	struct TOKENS
 	{
-		char* Token;
-		KeyValuePair TokenName;
-		KeyValuePair TokenType;
+		Lexemas Lexema;
+		struct TOKENS* Anterior;
+		struct TOKENS* Proximo;
 	};
 	typedef struct TOKENS Tokens;
 	
 	
+	// Estrutura da Lista de Erros
+	struct ERROS
+	{
+		Lexemas* Lexema;
+		char*	MensagemErro;
+		unsigned int Linha;
+		unsigned int Coluna;
+		struct ERROS* Anterior;
+		struct ERROS* Proximo;
+	};
+	typedef struct ERROS Erros;
+		
 	
-	// Estrutura da Tabela de SÃ­mbolos
+	// Estrutura da Tabela de Símbolos
 	struct TABELA_SIMBOLOS
 	{
 		char* Identificador;
