@@ -119,6 +119,7 @@
 	struct LEXEMAS
 	{
 		char* Lexema;
+		unsigned int LexemaId;
 		KeyValuePair LexemaName;
 		KeyValuePair LexemaType;
 	};

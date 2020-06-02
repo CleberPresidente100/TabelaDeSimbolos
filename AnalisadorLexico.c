@@ -39,7 +39,7 @@ void RealizarAnaliseLexica()
 		if(lexemaSimbolo.Lexema != NULL)
 		{
 			ProcessaLexemaLido(&lexemaLido[0], linha, coluna); // Se for um Símbolo, Processa o Lexema existente antes do Símbolo.
-			AdicionarLexemaListaTokens(lexemaSimbolo); // Agora, Processa o Símbolo.
+			AdicionarLexemaListaTokens(&lexemaSimbolo); // Agora, Processa o Símbolo.
 			
 			LimparString(&lexemaLido[0]); // Limpa Lexema Lido					
 			DeslocaVetor(&caractereLido[0]); // Efetua o Deslocamento para a Esquerda no Vetor
@@ -131,16 +131,16 @@ void ProcessaLexemaLido(char *string, unsigned int linha, unsigned int coluna)
 			// Verifica se o Token é um Identificador Válido
 			if(VerificarIdentificador(string))
 			{				
-				lexema = CriarTokenIdentificador(string); // Cria um Token Identificador
+				lexema = CriarLexemaIdentificador(string); // Cria um Token Identificador
 			}
 			else
 			{
-				lexema = CriarTokenInvalido(); // Cria um Token Inválido				
+				lexema = CriarLexemaInvalido(); // Cria um Token Inválido				
 				AdicionarLexemaListaErros(lexema, linha, coluna, "Erro"); // Não sendo, Adiciona um Erro na Tabela de Erros
 			}
 		}
 				
-		AdicionarLexemaListaTokens(lexema); // Adiciona o Lexema na Tabela de Tokens
+		AdicionarLexemaListaTokens(&lexema); // Adiciona o Lexema na Tabela de Tokens
 	}	
 	
 	return;

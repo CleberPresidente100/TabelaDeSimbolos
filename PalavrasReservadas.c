@@ -214,22 +214,29 @@ Lexemas ProcurarSimbolo(char *string)
 
 
 
-Lexemas CriarTokenIdentificador(char *string)
+Lexemas CriarLexemaIdentificador(char *string)
 {
 	Lexemas lexema;
 	
 	lexema = LexemaIdentificador;
 	
-	strcpy (lexema.Lexema, string);
+	lexema.Lexema = string;
 	
 	return lexema;
 }
 
 
 
-Lexemas CriarTokenInvalido()
+Lexemas CriarLexemaInvalido()
 {
 	return LexemaInvalido;
+}
+
+
+
+Lexemas CriarLexemaNulo()
+{
+	return LexemaNulo;
 }
 
 

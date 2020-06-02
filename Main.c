@@ -4,6 +4,7 @@
 
 #include "Bibliotecas.h"
 
+void ExibirTabelaTokens();
 
 int main(int argc, char** argv) {
 	
@@ -12,6 +13,8 @@ int main(int argc, char** argv) {
 	
 	Tokens* token = NULL;
 	unsigned int tamanho;
+	Lexemas lexema;
+	Lexemas lexemaAuxiliar;
 	
 	tamanho = sizeof(*token);
 	printf("\n Tamanho *token = %d", tamanho);
@@ -40,6 +43,34 @@ int main(int argc, char** argv) {
 	tamanho = sizeof(token.Lexema.LexemaName.Name);
 	printf("\n Tamanho token.LexemaLexemaName.Name = %d", tamanho);
 	*/
+	
+	
+	lexema = CriarLexemaIdentificador("teste");
+	lexemaAuxiliar = lexema;
+	AdicionarLexemaListaTokens(&lexema);
+	lexema = CriarLexemaIdentificador("teste2");
+	AdicionarLexemaListaTokens(&lexema);
+	lexema = CriarLexemaIdentificador("teste3");
+	AdicionarLexemaListaTokens(&lexema);
+	
+	ExibirTabelaTokens();	
+	
+	lexemaAuxiliar = CriarLexemaIdentificador("teste4");	
+	ModificarLexemaListaTokens(&lexema, &lexemaAuxiliar);
+		
+	ExibirTabelaTokens();
+	
+	lexema = CriarLexemaIdentificador("teste2");	
+	ExcluirLexemaListaTokens(&lexema);
+	
+	ExibirTabelaTokens();
+	
+	printf("\n\n\n");
+	
+	
+	
+	
+	
 	
 	
 	
@@ -71,14 +102,6 @@ int main(int argc, char** argv) {
 	//ExibirTabelaSimbolos();
 	
 	
-	LiberarMemoriaTabelaErros();
-	LiberarMemoriaTabelaTokens();
-	LiberarMemoriaTabelaSimbolos();
-	
-	
-	
-	
-	
 	
 	erroArquivo = FecharArquivo();
 	if(erroArquivo == TRUE)
@@ -92,6 +115,37 @@ int main(int argc, char** argv) {
 	
 	printf("\n\n\n");
 	return 0;*/
+	
+//	LiberarMemoriaTabelaErros();
+	LiberarMemoriaTabelaTokens();
+//	LiberarMemoriaTabelaSimbolos();
+}
+
+
+
+void ExibirTabelaTokens()
+{
+	Tokens* token = NULL;
+	
+	token = GetTabelaTokens();
+	
+	while(token)
+	{
+		printf("\n\n\n");
+		printf("\n %s", token->Lexema.Lexema);
+		printf("\n %d", token->Lexema.LexemaName.Id);
+		printf("\n %s", token->Lexema.LexemaName.Name);
+		printf("\n %d", token->Lexema.LexemaType.Id);
+		printf("\n %s", token->Lexema.LexemaType.Name);
+		printf("\n %d", token->Anterior);
+		printf("\n %d", token->Proximo);
+		
+		token = token->Proximo;
+	}
+	
+	printf("\n\n------------------------------------------");
+	
+	return;
 }
 
 

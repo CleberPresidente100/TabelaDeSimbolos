@@ -6,9 +6,10 @@
 	void CriarDicionario();
 	Lexemas ProcurarSimbolo(char *string);
 	Lexemas ProcurarPalavraReservada(char *string);
-	Lexemas CriarTokenIdentificador(char *string);
+	Lexemas CriarLexemaIdentificador(char *string);
 	boolean VerificarIdentificador(char *string);
-	Lexemas CriarTokenInvalido();
+	Lexemas CriarLexemaInvalido();
+	Lexemas CriarLexemaNulo();
 
 #endif
 
