@@ -5,8 +5,12 @@
 
 #include "Bibliotecas.h"
 
+#define INICIO_CONTAGEM_TOKEN_ID 1
+
 
 Tokens *listaTokens = NULL;
+unsigned int TokenID = INICIO_CONTAGEM_TOKEN_ID;
+unsigned int TamanhoListaTokens = 0;
 
 
 
@@ -41,7 +45,7 @@ void AdicionarLexemaListaTokens(Lexemas* lexema)
 
 
 
-Tokens* ProcurarLexemaListaTokens(Lexemas* lexema)
+Tokens* ProcurarTokenListaTokens(unsigned int tokenId)
 {
 	Tokens* listaTokensAuxiliar;
 	
@@ -52,7 +56,7 @@ Tokens* ProcurarLexemaListaTokens(Lexemas* lexema)
 		
 		while(listaTokensAuxiliar)
 		{
-			if(listaTokensAuxiliar->Lexema.LexemaId == lexema->LexemaId)
+			if(listaTokensAuxiliar->TokenId == tokenId)
 			{
 				return listaTokensAuxiliar;
 			}
@@ -66,20 +70,26 @@ Tokens* ProcurarLexemaListaTokens(Lexemas* lexema)
 
 
 
-void ModificarLexemaListaTokens(Lexemas* lexemaAModificar, Lexemas* lexemaNovo)
+void ModificarLexemaListaTokens(unsigned int idTokenAModificar, Lexemas* lexemaNovo)
 {
+	unsigned int tamanhoString = 0;	
 	Tokens* token;
 	
-	token = ProcurarLexemaListaTokens(lexemaAModificar);
+	token = ProcurarTokenListaTokens(idTokenAModificar);
 	
 	if(token != NULL)
 	{
-		token->Lexema.Lexema = lexemaNovo->Lexema;
-		token->Lexema.LexemaId = lexemaNovo->LexemaId;
-		token->Lexema.LexemaName.Id = lexemaNovo->LexemaName.Id;
-		token->Lexema.LexemaName.Name = lexemaNovo->LexemaName.Name;
-		token->Lexema.LexemaType.Id = lexemaNovo->LexemaType.Id;
-		token->Lexema.LexemaType.Name = lexemaNovo->LexemaType.Name;
+		token->Lexema.LexemaId = lexemaNovo.LexemaId;
+		
+		// Caso exista uma String de Identificador, adiciona a mesma no Token
+		tamanhoString = SizeOf(lexema->Identificador);	
+		if(tamanhoString > 0)
+		{
+			free(token.Lexema.Identificador);
+			token->Lexema.Identificador = calloc(1, tamanhoString + sizeof(char));	
+			strcpy(token->Lexema.Identificador, lexemaNovo.Identificador);
+		}
+		
 		return;
 	}
 	
@@ -88,24 +98,42 @@ void ModificarLexemaListaTokens(Lexemas* lexemaAModificar, Lexemas* lexemaNovo)
 
 
 
-void ExcluirLexemaListaTokens(Lexemas* lexema)
+void ExcluirTokenListaTokens(unsigned int tokenId)
 {
 	Tokens* token;
 	
-	token = ProcurarLexemaListaTokens(lexema);
+	token = ProcurarTokenListaTokens(tokenId);
 	
 	if(token != NULL)
-	{
+	{		
 		if(token->Anterior)
 		{
-			token->Anterior->Proximo = token->Proximo;
-			listaTokens = token;
+			token->Anterior->Proximo = token->Proximo;			
 		}
+		// Caso o Token a ser Excluído seja o Primeiro da Lista
+		else
+		{
+			listaTokens = token->Proximo;
+		}
+		
 		
 		if(token->Proximo)
 		{
 			token->Proximo->Anterior = token->Anterior;
 		}
+		
+		// Caso o Token a ser Excluído seja o Último da Lista
+		else
+		{
+			// Verifica se ele é o Único item da Lista.
+			if(token->Anterior->Proximo)
+			{
+				token->Anterior->Proximo = NULL;
+			}			
+		}
+		
+		free(token);
+		TamanhoListaTokens--;
 		
 		return;
 	}
@@ -131,21 +159,25 @@ void LiberarMemoriaTabelaTokens()
 
 Tokens* CriaNovoToken(Lexemas* lexema)
 {
+	unsigned int tamanhoString = 0;
 	Tokens* novoToken;
+	
+	TamanhoListaTokens++;
 	
 	novoToken = calloc(1, sizeof(Tokens));
 	
-	novoToken->Lexema.Lexema = calloc(1, SizeOf(lexema->Lexema) + sizeof(char));	
-	strcpy(novoToken->Lexema.Lexema, lexema->Lexema);	
-	
-	novoToken->Lexema.LexemaName.Id = lexema->LexemaName.Id;
-	novoToken->Lexema.LexemaName.Name = lexema->LexemaName.Name;
-	
-	novoToken->Lexema.LexemaType.Id = lexema->LexemaType.Id;
-	novoToken->Lexema.LexemaType.Name = lexema->LexemaType.Name;
-	
 	novoToken->Anterior = NULL;
-	novoToken->Proximo = NULL;
+	novoToken->Proximo = NULL;	
+	novoToken->TokenId = TokenID++;
+	novoToken->Lexema.LexemaId = lexema->LexemaId;
+	
+	// Caso exista uma String de Identificador, adiciona a mesma no Token
+	tamanhoString = SizeOf(lexema->Identificador);	
+	if(tamanhoString > 0)
+	{
+		novoToken->Lexema.Identificador = calloc(1, tamanhoString + sizeof(char));	
+		strcpy(novoToken->Lexema.Identificador, lexema.Identificador);
+	}
 	
 	return novoToken;
 }

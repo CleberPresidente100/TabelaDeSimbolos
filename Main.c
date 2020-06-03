@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
 	ExibirTabelaTokens();	
 	
 	lexemaAuxiliar = CriarLexemaIdentificador("teste4");	
-	ModificarLexemaListaTokens(&lexema, &lexemaAuxiliar);
+	ModificarTokenListaTokens(&lexema, &lexemaAuxiliar);
 		
 	ExibirTabelaTokens();
 	

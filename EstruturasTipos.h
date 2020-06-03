@@ -88,18 +88,18 @@
 		T_Invalido,
 		T_Identificador,
 
-		// Identificadores
-		Tipo,
-		ComplementoTipo,
-		ModificadorTipo,
-		TipoPersonalizado,
-		PalavraReservada,
-		Diretiva,
-		Simbolos,
-		Operador,
-		Comentario,
-		Invalido,
-		Identificador,
+		// Categorias de Lexemas
+		CL_Tipo,
+		CL_ComplementoTipo,
+		CL_ModificadorTipo,
+		CL_TipoPersonalizado,
+		CL_PalavraReservada,
+		CL_Diretiva,
+		CL_Simbolos,
+		CL_Operador,
+		CL_Comentario,
+		CL_Invalido,
+		CL_Identificador,
 		
 	};
 
@@ -115,13 +115,23 @@
 	typedef struct KEY_VALUE_PAIR KeyValuePair;
 	
 	
-	// Estrutura do Lexema
-	struct LEXEMAS
+	// Estrutura dos Lexemas Reservados
+	struct LEXEMAS_RESERVADOS
 	{
 		char* Lexema;
-		unsigned int LexemaId;
 		KeyValuePair LexemaName;
 		KeyValuePair LexemaType;
+	};
+	typedef struct LEXEMAS_RESERVADOS LexemasReservados;
+	
+	
+	// Estrutura do Lexema que será armazenado no Token.
+	struct LEXEMAS
+	{
+		unsigned int LexemaId;
+		
+		// O Campo abaixo é utilizado apenas quando o Lexema for um Identificador		
+		char* Identificador; // Armazena o ponteiro da String do Identificador.
 	};
 	typedef struct LEXEMAS Lexemas;
 	
@@ -130,6 +140,7 @@
 	struct TOKENS
 	{
 		Lexemas Lexema;
+		unsigned int TokenId;
 		struct TOKENS* Anterior;
 		struct TOKENS* Proximo;
 	};
@@ -139,7 +150,7 @@
 	// Estrutura da Lista de Erros
 	struct ERROS
 	{
-		Lexemas* Lexema;
+		Lexemas Lexema;
 		char*	MensagemErro;
 		unsigned int Linha;
 		unsigned int Coluna;
