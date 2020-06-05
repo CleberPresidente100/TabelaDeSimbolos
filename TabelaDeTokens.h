@@ -3,7 +3,7 @@
 #ifndef TABELA_TOKENS
 	#define TABELA_TOKENS 1
 		
-	void AdicionarLexemaListaTokens(Lexemas* lexema);
+	void AdicionarLexemaListaTokens(Lexemas* lexema, unsigned int linha, unsigned int coluna);
 	Tokens* ProcurarTokenListaTokens(unsigned int tokenId);
 	void ModificarLexemaListaTokens(unsigned int idTokenAModificar, Lexemas* lexemaNovo);
 	void ExcluirTokenListaTokens(unsigned int tokenId);

@@ -140,6 +140,8 @@
 	struct TOKENS
 	{
 		Lexemas Lexema;
+		unsigned int Linha;
+		unsigned int Coluna;
 		unsigned int TokenId;
 		struct TOKENS* Anterior;
 		struct TOKENS* Proximo;

@@ -122,7 +122,7 @@ LexemasReservados dicionarioSimbolosCompostos[] =
 	{.Lexema = "<=",	.LexemaName = {.Name ="T_MenorIgualQ", 	.Id = T_MenorIgualQ},	.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
 	{.Lexema = "==",	.LexemaName = {.Name ="T_Igual", 		.Id = T_Igual},			.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
 	{.Lexema = "!=",	.LexemaName = {.Name ="T_Diferente", 	.Id = T_Diferente},		.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
-	{.Lexema = "=",		.LexemaName = {.Name ="T_Atribuicao", 	.Id = T_Atribuicao},	.LexemaType = {.Name = OPERADOR, .Id = Operador}},
+	{.Lexema = "=",		.LexemaName = {.Name ="T_Atribuicao", 	.Id = T_Atribuicao},	.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
 	{.Lexema = "!",		.LexemaName = {.Name ="T_Negacao", 		.Id = T_Negacao},		.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
 	{.Lexema = "&&",	.LexemaName = {.Name ="T_E_Logico", 	.Id = T_E_Logico},		.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
 	{.Lexema = "||",	.LexemaName = {.Name ="T_Ou_Logico", 	.Id = T_Ou_Logico},		.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
@@ -150,10 +150,10 @@ unsigned int IdentificarLexema(char* string)
 	unsigned int lexemaId = NULL;
 	
 	lexemaId = ProcurarPalavraReservada(string);	
-	if(lexemaId != NULL) return lexemaId;
+	if(lexemaId != NULO) return lexemaId;
 	
 	lexemaId = ProcurarSimbolo(string);	
-	if(lexemaId != NULL) return lexemaId;
+	if(lexemaId != NULO) return lexemaId;
 	
 	return lexemaId;	
 }
@@ -175,7 +175,7 @@ unsigned int ProcurarPalavraReservada(char *string)
 		indice++;
 	}
 	
-	return NULL;
+	return NULO;
 }
 
 
@@ -210,39 +210,68 @@ unsigned int ProcurarSimbolo(char *string)
 		indice++;
 	}
 	
-	return NULL;
+	return NULO;
 }
 
 
 
-Lexemas CriarLexemaIdentificador(char *string)
+Lexemas CriarLexemaIdentificador(char* string)
 {
 	Lexemas lexema;
-	
-	lexema = LexemaIdentificador;
-	
-	lexema.Lexema = string;
-	
 	return lexema;
 }
 
 
 
-Lexemas CriarLexemaInvalido()
+unsigned int CriarLexemaInvalido()
 {
-	return LexemaInvalido;
+	return LexemaInvalido.LexemaName.Id;
 }
 
 
 
-Lexemas CriarLexemaNulo()
+unsigned int CriarLexemaNulo()
 {
-	return LexemaNulo;
+	return LexemaNulo.LexemaName.Id;
 }
 
 
 
 boolean VerificarIdentificador(char *string)
+{
+	// Verifica se o Primeiro Caractere do Identificador é válido
+	if(
+		!(*string >= PRIMEIRA_LETRA_MAIUSCULA_VALIDA && *string <= ULTIMA_LETRA_MAIUSCULA_VALIDA) &&
+		!(*string >= PRIMEIRA_LETRA_MINUSCULA_VALIDA && *string <= ULTIMA_LETRA_MINUSCULA_VALIDA) &&
+		!(*string == UNDERLINE)
+	)
+	{
+		return FALSE;
+	}
+	
+	string++;	
+	while(*string)
+	{
+		if(
+			(*string >= PRIMEIRA_LETRA_MAIUSCULA_VALIDA && *string <= ULTIMA_LETRA_MAIUSCULA_VALIDA) ||
+			(*string >= PRIMEIRA_LETRA_MINUSCULA_VALIDA && *string <= ULTIMA_LETRA_MINUSCULA_VALIDA) ||
+			(*string >= PRIMEIRO_NUMERO_VALIDO && *string <= ULTIMO_NUMERO_VALIDO) ||
+			(*string == UNDERLINE)
+		)
+		{
+			string++;
+			continue;
+		}
+		
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+
+
+boolean VerificarIdentificadorStringConstante(char *string)
 {
 	// Verifica se o Primeiro Caractere do Identificador é válido
 	if(
@@ -297,6 +326,25 @@ boolean VerificarIdentificadorNumerico(char *string)
 	}
 
 	return TRUE;
+}
+
+
+
+boolean EhUmSimboloComposto(unsigned int lexemaId)
+{
+	unsigned int indice = 0;
+	
+	while(dicionarioSimbolosCompostos[indice].LexemaName.Id)
+	{
+		if(dicionarioSimbolosCompostos[indice].LexemaName.Id == lexemaId)
+		{
+			return TRUE;
+		}
+		
+		indice++;
+	}
+	
+	return FALSE;
 }
 
 

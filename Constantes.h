@@ -6,6 +6,7 @@
 	// Constantes Booleanas
 	#define TRUE 1
 	#define FALSE 0
+	#define NULO 0
 	
 	
 	// Constantes de Scopo

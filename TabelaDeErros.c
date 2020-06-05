@@ -9,7 +9,7 @@ Erros *listaErros = NULL;
 
 
 
-void AdicionarLexemaListaErros(Lexemas lexema, unsigned int linha, unsigned int coluna, char* MensagemErro)
+void AdicionarLexemaListaErros(Lexemas* lexema, unsigned int linha, unsigned int coluna, char* MensagemErro)
 {
 	return;
 }

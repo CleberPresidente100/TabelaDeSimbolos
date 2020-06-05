@@ -14,7 +14,7 @@ unsigned int TamanhoListaTokens = 0;
 
 
 
-void AdicionarLexemaListaTokens(Lexemas* lexema)
+void AdicionarLexemaListaTokens(Lexemas* lexema, unsigned int linha, unsigned int coluna)
 {
 	Tokens* novoToken;
 	Tokens* listaTokensAuxiliar;
@@ -79,15 +79,15 @@ void ModificarLexemaListaTokens(unsigned int idTokenAModificar, Lexemas* lexemaN
 	
 	if(token != NULL)
 	{
-		token->Lexema.LexemaId = lexemaNovo.LexemaId;
+		token->Lexema.LexemaId = lexemaNovo->LexemaId;
 		
 		// Caso exista uma String de Identificador, adiciona a mesma no Token
-		tamanhoString = SizeOf(lexema->Identificador);	
+		tamanhoString = SizeOf(lexemaNovo->Identificador);
 		if(tamanhoString > 0)
 		{
-			free(token.Lexema.Identificador);
+			free(token->Lexema.Identificador);
 			token->Lexema.Identificador = calloc(1, tamanhoString + sizeof(char));	
-			strcpy(token->Lexema.Identificador, lexemaNovo.Identificador);
+			strcpy(token->Lexema.Identificador, lexemaNovo->Identificador);
 		}
 		
 		return;
@@ -176,7 +176,7 @@ Tokens* CriaNovoToken(Lexemas* lexema)
 	if(tamanhoString > 0)
 	{
 		novoToken->Lexema.Identificador = calloc(1, tamanhoString + sizeof(char));	
-		strcpy(novoToken->Lexema.Identificador, lexema.Identificador);
+		strcpy(novoToken->Lexema.Identificador, lexema->Identificador);
 	}
 	
 	return novoToken;

@@ -46,22 +46,28 @@ int main(int argc, char** argv) {
 	
 	
 	lexema = CriarLexemaIdentificador("teste");
-	lexemaAuxiliar = lexema;
-	AdicionarLexemaListaTokens(&lexema);
+	AdicionarLexemaListaTokens(&lexema, 1, 1);
 	lexema = CriarLexemaIdentificador("teste2");
-	AdicionarLexemaListaTokens(&lexema);
+	AdicionarLexemaListaTokens(&lexema, 1, 1);
 	lexema = CriarLexemaIdentificador("teste3");
-	AdicionarLexemaListaTokens(&lexema);
+	AdicionarLexemaListaTokens(&lexema, 1, 1);
 	
 	ExibirTabelaTokens();	
 	
-	lexemaAuxiliar = CriarLexemaIdentificador("teste4");	
-	ModificarTokenListaTokens(&lexema, &lexemaAuxiliar);
+	lexema = CriarLexemaIdentificador("teste4");	
+	ModificarTokenListaTokens(2, &lexemaAuxiliar);
 		
 	ExibirTabelaTokens();
-	
-	lexema = CriarLexemaIdentificador("teste2");	
-	ExcluirLexemaListaTokens(&lexema);
+		
+	ExcluirLexemaListaTokens(1);
+		
+	ExibirTabelaTokens();
+		
+	ExcluirLexemaListaTokens(2);
+		
+	ExibirTabelaTokens();
+		
+	ExcluirLexemaListaTokens(1);
 	
 	ExibirTabelaTokens();
 	
@@ -132,11 +138,11 @@ void ExibirTabelaTokens()
 	while(token)
 	{
 		printf("\n\n\n");
-		printf("\n %s", token->Lexema.Lexema);
-		printf("\n %d", token->Lexema.LexemaName.Id);
-		printf("\n %s", token->Lexema.LexemaName.Name);
-		printf("\n %d", token->Lexema.LexemaType.Id);
-		printf("\n %s", token->Lexema.LexemaType.Name);
+		printf("\n %d", token->TokenId);
+		printf("\n %d", token->Lexema.LexemaId);
+		printf("\n %s", token->Lexema.Identificador);
+		printf("\n %d", token->Linha);
+		printf("\n %d", token->Coluna);
 		printf("\n %d", token->Anterior);
 		printf("\n %d", token->Proximo);
 		
