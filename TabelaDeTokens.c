@@ -70,7 +70,7 @@ Tokens* ProcurarTokenListaTokens(unsigned int tokenId)
 
 
 
-void ModificarLexemaListaTokens(unsigned int idTokenAModificar, Lexemas* lexemaNovo)
+void ModificarTokenListaTokens(unsigned int idTokenAModificar, Lexemas* lexemaNovo)
 {
 	unsigned int tamanhoString = 0;	
 	Tokens* token;
@@ -126,7 +126,7 @@ void ExcluirTokenListaTokens(unsigned int tokenId)
 		else
 		{
 			// Verifica se ele é o Único item da Lista.
-			if(token->Anterior->Proximo)
+			if(token->Anterior)
 			{
 				token->Anterior->Proximo = NULL;
 			}			

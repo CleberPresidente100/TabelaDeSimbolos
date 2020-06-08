@@ -25,11 +25,12 @@ void RealizarAnaliseLexica()
 	//		e a segunda posição armazena o segundo caractere do Símbolo Composto.
 	// A terceira posição é apenas um caractere "Fim de String".
 	
-	Lexemas lexemaSimbolo;
+	Lexemas lexemaSimbolo;	
 	char lexemaLido[TAMANHO_DO_BUFFER];
 	
 	
 	LimparString(&lexemaLido[0]); // Inicializa Vetor	
+	lexemaSimbolo = CriarLexemaNulo(); // Inicializa Estrutura
 	caractereLido[0] = LerCaractereDoArquivo(); // Efetua a Leitura do Primeiro Caractere do Arquivo
 	
 	
@@ -138,13 +139,15 @@ void LimparString(char *string)
 void ProcessaLexemaLido(char *string, unsigned int linha, unsigned int coluna)
 {
 	Lexemas lexema;
+	
+	lexema = CriarLexemaNulo(); // Inicializa Lexema
 		
 	// Verifica se a String é uma string vazia.
 	if(SizeOf(string) > 0)
 	{
 		// Verifica se o Lexema é uma Palavra Reservada
 		lexema.LexemaId = ProcurarPalavraReservada(string);
-		if(lexema.LexemaId == NULO)
+		if(lexema.LexemaId != NULO)
 		{
 			AdicionarLexemaListaTokens(&lexema, linha, coluna); // Adiciona o Lexema na Tabela de Tokens
 			return;
@@ -195,10 +198,13 @@ unsigned int SizeOf(char *string)
 {
 	unsigned int contador = 0;
 	
-	while(*string != 0)
+	if(string != NULL)
 	{
-		string++;
-		contador++;
+		while(*string != 0)
+		{
+			string++;
+			contador++;
+		}
 	}
 	
 	return contador;
