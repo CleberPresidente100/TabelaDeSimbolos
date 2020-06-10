@@ -91,7 +91,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit5]
-FileName=PalavrasReservadas.c
+FileName=LexemasReservados.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -101,7 +101,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit6]
-FileName=PalavrasReservadas.h
+FileName=LexemasReservados.h
 CompileCpp=0
 Folder=Cabecalhos
 Compile=1

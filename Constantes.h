@@ -15,6 +15,10 @@
 	#define LOCAL_COD 2
 	#define LOCAL_DESCRICAO "Local"
 	
+	// Arquivos
+	#define MODO_LEITURA "r"
+	#define MODO_GRAVACAO "w"
+	
 	
 #endif
 

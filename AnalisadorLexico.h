@@ -10,6 +10,7 @@
 	void ProcessaLexemaLido(char *string, unsigned int linha, unsigned int coluna);
 	void AdicionaLexemaListaTokens(Lexemas lexema, Tokens *listaTokens);
 	void AdicionaLexemaListaErros(Lexemas lexema, Erros *listaErros, unsigned int linha, unsigned int coluna, char* MensagemErro);
+	unsigned int SizeOf(char *string);
 	
 #endif	
 

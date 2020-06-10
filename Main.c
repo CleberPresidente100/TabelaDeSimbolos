@@ -98,10 +98,10 @@ int main(int argc, char** argv) {
 	/*
 	printf("\n\n Digite o nome do arquivo: ");
 	scanf("%s", &nomeDoArquivo);
-	erroArquivo = AbrirArquivo(&nomeDoArquivo[0]);
+	erroArquivo = AbrirArquivo(&nomeDoArquivo[0], MODO_LEITURA);
 	*/
 	
-	erroArquivo = AbrirArquivo("teste.txt");
+	erroArquivo = AbrirArquivo("teste.txt", MODO_LEITURA);
 	if(erroArquivo == FALSE)
 	{
 		printf("\n\n Não foi possível Abrir o Arquivo.");
@@ -121,7 +121,6 @@ int main(int argc, char** argv) {
 	ExibirTabelaTokens();
 	
 	
-	
 	erroArquivo = FecharArquivo();
 	if(erroArquivo == TRUE)
 	{
@@ -131,6 +130,10 @@ int main(int argc, char** argv) {
 	{
 		printf("\n\n Não foi possível Fechar o Arquivo.");
 	}
+	
+	
+	
+	GravarTabelaDeTokensEmArquivo("teste.txt");
 	
 	printf("\n\n\n");
 	return 0;

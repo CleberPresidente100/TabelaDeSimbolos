@@ -10,6 +10,7 @@
 	void LiberarMemoriaTabelaTokens();
 	Tokens* GetTabelaTokens();
 	Tokens* CriaNovoToken(Lexemas* lexema);
+	void GravarTabelaDeTokensEmArquivo(char* nomeDoArquivoOriginal);
 	
 #endif	
 

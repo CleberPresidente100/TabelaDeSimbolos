@@ -184,6 +184,89 @@ Tokens* CriaNovoToken(Lexemas* lexema)
 
 
 
+void GravarTabelaDeTokensEmArquivo(char* nomeDoArquivoOriginal)
+{
+	FILE *ponteiroArquivo = NULL;
+	
+	char nomeDoArquivo[255];
+	char * ponteiroExtensao;
+	unsigned int posicaoExtensao;
+	
+	Tokens* token = NULL;
+	LexemasReservados lexemaReservado;
+	char linhaDoArquivo[1000];
+	
+  	
+  	// Gera nome do Arquivo onde a Tabela de Tokens será Gravada
+	ponteiroExtensao = strrchr(nomeDoArquivoOriginal,'.');
+	if(ponteiroExtensao == NULL)
+	{
+		posicaoExtensao = SizeOf(nomeDoArquivoOriginal) - 1;
+	}
+	else
+	{
+		posicaoExtensao = ponteiroExtensao - nomeDoArquivoOriginal;
+	}
+		
+	strcpy(nomeDoArquivo, nomeDoArquivoOriginal);	
+	LimparString(&nomeDoArquivo[posicaoExtensao]);	
+	strcat(nomeDoArquivo, "_TokenTable.txt\0");
+	
+	
+	// Abre o Arquivo para Gravação
+	ponteiroArquivo = fopen(&nomeDoArquivo[0], "w");
+	if(ponteiroArquivo == NULL)
+	{
+		printf("\n\n Não foi possível Criar o Arquivo de Tabela de Tokens.");
+	}
+	else
+	{
+		printf("\n\n Arquivo de Tabela de Tokens Aberto com Sucesso.");
+	}
+	
+	
+	
+	
+	// Efetua a Leitura da Tabela e consequente Gravação da mesma no Arquivo.
+	token = GetTabelaTokens();
+		
+	while(token)
+	{
+		LimparString(&linhaDoArquivo[0]);
+		lexemaReservado = ObterLexemaReservado(token->Lexema.LexemaId);
+		
+		fprintf(ponteiroArquivo,
+		
+					"TokenId = %d  "
+					"|  LexemaId = %d  "
+					"|  Palavra Reservada = %s  "
+					"|  Identificador = %s  "
+					"|  Categoria Lexema = %s  "
+					"|  Linha = %d  "
+					"|  Coluna %d  "
+					"|  token->Anterior = %d  "
+					"|  token->Proximo = %d  "
+					"\n------------------------------------------------------------------------------------\n",
+					
+					token->TokenId,
+					token->Lexema.LexemaId,
+					lexemaReservado.Lexema,
+					token->Lexema.Identificador,
+					lexemaReservado.LexemaType.Name,
+					token->Linha,
+					token->Coluna,
+					token->Anterior,
+					token->Proximo
+					);
+					
+		token = token->Proximo;
+	}
+	
+	fclose(ponteiroArquivo);
+}
+
+
+
 	
 	
 

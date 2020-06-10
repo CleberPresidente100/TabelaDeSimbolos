@@ -122,20 +122,6 @@ void RealizarAnaliseLexica()
 
 
 
-void LimparString(char *string)
-{
-	int indice = 0;
-	
-	for(indice = 0; indice < TAMANHO_DO_BUFFER; indice++)
-	{
-		*string = 0;
-		string++;
-	}
-	
-}
-
-
-
 void ProcessaLexemaLido(char *string, unsigned int linha, unsigned int coluna)
 {
 	Lexemas lexema;
@@ -208,6 +194,21 @@ unsigned int SizeOf(char *string)
 	}
 	
 	return contador;
+}
+
+
+
+void LimparString(char *string)
+{
+	if(string != NULL)
+	{
+		while(*string != 0)
+		{
+			*string = 0;
+			string++;
+		}
+	}
+	
 }
 
 
