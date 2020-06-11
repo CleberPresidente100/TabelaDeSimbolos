@@ -36,6 +36,9 @@ void AdicionarLexemaListaTokens(Lexemas* lexema, unsigned int linha, unsigned in
 	{
 		listaTokensAuxiliar = listaTokensAuxiliar->Proximo;
 	}
+	
+	novoToken->Linha = linha;
+	novoToken->Coluna = coluna;
 		
 	novoToken->Anterior = listaTokensAuxiliar;
 	listaTokensAuxiliar->Proximo = novoToken;
@@ -209,7 +212,7 @@ void GravarTabelaDeTokensEmArquivo(char* nomeDoArquivoOriginal)
 	}
 		
 	strcpy(nomeDoArquivo, nomeDoArquivoOriginal);	
-	LimparString(&nomeDoArquivo[posicaoExtensao]);	
+	LimparString(&nomeDoArquivo[posicaoExtensao], (sizeof(nomeDoArquivo) - posicaoExtensao));	
 	strcat(nomeDoArquivo, "_TokenTable.txt\0");
 	
 	
@@ -232,16 +235,16 @@ void GravarTabelaDeTokensEmArquivo(char* nomeDoArquivoOriginal)
 		
 	while(token)
 	{
-		LimparString(&linhaDoArquivo[0]);
+		LimparString(&linhaDoArquivo[0], sizeof(linhaDoArquivo));
 		lexemaReservado = ObterLexemaReservado(token->Lexema.LexemaId);
 		
 		fprintf(ponteiroArquivo,
 		
 					"TokenId = %d  "
 					"|  LexemaId = %d  "
-					"|  Palavra Reservada = %s  "
-					"|  Identificador = %s  "
-					"|  Categoria Lexema = %s  "
+					"|  Palavra Reservada = \"%s\"  "
+					"|  Identificador = \"%s\"  "
+					"|  Categoria Lexema = \"%s\"  "
 					"|  Linha = %d  "
 					"|  Coluna %d  "
 					"|  token->Anterior = %d  "

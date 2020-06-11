@@ -3,7 +3,7 @@
 #ifndef ANALISADOR_LEXICO
 	#define ANALISADOR_LEXICO 1
 		
-	void LimparString(char *string);
+	void LimparString(char *string, unsigned int tamanho);
 	void DeslocaVetor(char *string);
 	unsigned int SizeOf(char *string);
 	void RealizarAnaliseLexica();

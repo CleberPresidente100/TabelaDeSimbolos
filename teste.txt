@@ -1,2 +1,88 @@
 
-unsigned int xYz;
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "Bibliotecas.h"
+
+void ExibirTabelaTokens();
+
+int main(int argc, char** argv) {
+	
+	char nomeDoArquivo[256];
+	boolean erroArquivo = FALSE;
+	
+	erroArquivo = AbrirArquivo("teste.txt", MODO_LEITURA);
+	if(erroArquivo == FALSE)
+	{
+		printf("\n\n Não foi possível Abrir o Arquivo.");
+	}
+	else
+	{
+		printf("\n\n Arquivo Aberto com Sucesso.");
+	}
+	
+	
+	
+	
+	RealizarAnaliseLexica();
+	ExibirTabelaTokens();
+	
+	
+	erroArquivo = FecharArquivo();
+	if(erroArquivo == TRUE)
+	{
+		printf("\n\n Arquivo Fechado com Sucesso.");
+	}
+	else
+	{
+		printf("\n\n Não foi possível Fechar o Arquivo.");
+	}
+	
+	
+	
+	GravarTabelaDeTokensEmArquivo("teste.txt");
+	
+	printf("\n\n\n");
+	return 0;
+
+	
+
+	LiberarMemoriaTabelaTokens();
+}
+
+
+
+void ExibirTabelaTokens()
+{
+	Tokens* token = NULL;
+	LexemasReservados lexemaReservado;
+	
+	token = GetTabelaTokens();
+	
+	while(token)
+	{
+		lexemaReservado = ObterLexemaReservado(token->Lexema.LexemaId);
+		
+		printf("\n\n\n");
+		printf("\n token->TokenId              = %d", token->TokenId);
+		printf("\n token->Lexema.LexemaId      = %d", token->Lexema.LexemaId);
+		printf("\n Palavra Reservada           = %s", lexemaReservado.Lexema);
+		printf("\n token->Lexema.Identificador = %s", token->Lexema.Identificador);
+		printf("\n Categoria Lexema            = %s", lexemaReservado.LexemaType.Name);
+		printf("\n token->Linha                = %d", token->Linha);
+		printf("\n token->Coluna               = %d", token->Coluna);
+		printf("\n token->Anterior             = %d", token->Anterior);
+		printf("\n token->Proximo              = %d", token->Proximo);
+		
+		token = token->Proximo;
+	}
+	
+	printf("\n\n------------------------------------------");
+	
+	return;
+}
+
+
+
+
+

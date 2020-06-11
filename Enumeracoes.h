@@ -84,7 +84,9 @@
 		
 		// Extras
 		T_Invalido,
-		T_Identificador,
+		T_ConstanteTexto,
+		T_IdentificadorString,
+		T_IdentificadorNumerico,
 
 		// Categorias de Lexemas
 		CL_Tipo,
@@ -97,7 +99,9 @@
 		CL_Operador,
 		CL_Comentario,
 		CL_Invalido,
-		CL_Identificador,
+		CL_ConstanteTexto,
+		CL_IdentificadorString,
+		CL_IdentificadorNumerico,
 		
 	};
 	

@@ -6,29 +6,31 @@
 #include "Bibliotecas.h"
 
 
-#define PRIMEIRA_LETRA_MAIUSCULA_VALIDA		65
-#define ULTIMA_LETRA_MAIUSCULA_VALIDA		90
+#define PRIMEIRA_LETRA_MAIUSCULA_VALIDA		'A' // 65
+#define ULTIMA_LETRA_MAIUSCULA_VALIDA		'Z' // 90
 
-#define PRIMEIRA_LETRA_MINUSCULA_VALIDA		97
-#define ULTIMA_LETRA_MINUSCULA_VALIDA		122
+#define PRIMEIRA_LETRA_MINUSCULA_VALIDA		'a' // 97
+#define ULTIMA_LETRA_MINUSCULA_VALIDA		'z' // 122
 
-#define PRIMEIRO_NUMERO_VALIDO	48
-#define ULTIMO_NUMERO_VALIDO	57
+#define PRIMEIRO_NUMERO_VALIDO	'0' // 48
+#define ULTIMO_NUMERO_VALIDO	'9' // 57
 
 #define UNDERLINE	95
 
 
 #define TIPO "Tipo"
-#define COMPLEMENTO_TIPO "ComplementoTipo"
-#define MODIFICADOR_TIPO "ModificadorTipo"
-#define TIPO_PERSONALIZADO "TipoPersonalizado"
-#define PALAVRA_RESERVADA "PalavraReservada"
+#define COMPLEMENTO_TIPO "Complemento de Tipo"
+#define MODIFICADOR_TIPO "Modificador de Tipo"
+#define TIPO_PERSONALIZADO "Tipo Personalizado"
+#define PALAVRA_RESERVADA "Palavra Reservada"
 #define DIRETIVA "Diretiva"
 #define SIMBOLO "Simbolo"
 #define OPERADOR "Operador"
 #define COMENTARIO "Comentario"
 #define INVALIDO "Invalido"
-#define IDENTIFICADOR "Identificador"
+#define CONSTANTE_TEXTO "Constante de Texto"
+#define IDENTIFICADOR_STRING "Identificador String"
+#define IDENTIFICADOR_NUMERICO "Identificador Numerico"
 
 
 
@@ -103,6 +105,8 @@ LexemasReservados dicionarioSimbolosSimples[] =
 	
 	
 	// Operadores
+	{.Lexema = "=",	.LexemaName = {.Name ="T_Atribuicao", 	.Id = T_Atribuicao},	.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
+	{.Lexema = "!",	.LexemaName = {.Name ="T_Negacao", 		.Id = T_Negacao},		.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
 	{.Lexema = "*",	.LexemaName = {.Name ="T_Multiplicacao",.Id = T_Multiplicacao},	.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
 	{.Lexema = "+",	.LexemaName = {.Name ="T_Soma", 		.Id = T_Soma},			.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
 	{.Lexema = "/",	.LexemaName = {.Name ="T_Divisao", 		.Id = T_Divisao},		.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
@@ -117,13 +121,11 @@ LexemasReservados dicionarioSimbolosSimples[] =
 
 LexemasReservados dicionarioSimbolosCompostos[] =
 {
-	// Operadores	
+	// Operadores
 	{.Lexema = ">=",	.LexemaName = {.Name ="T_MaiorIgualQ", 	.Id = T_MaiorIgualQ},	.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
 	{.Lexema = "<=",	.LexemaName = {.Name ="T_MenorIgualQ", 	.Id = T_MenorIgualQ},	.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
 	{.Lexema = "==",	.LexemaName = {.Name ="T_Igual", 		.Id = T_Igual},			.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
-	{.Lexema = "!=",	.LexemaName = {.Name ="T_Diferente", 	.Id = T_Diferente},		.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
-	{.Lexema = "=",		.LexemaName = {.Name ="T_Atribuicao", 	.Id = T_Atribuicao},	.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
-	{.Lexema = "!",		.LexemaName = {.Name ="T_Negacao", 		.Id = T_Negacao},		.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
+	{.Lexema = "!=",	.LexemaName = {.Name ="T_Diferente", 	.Id = T_Diferente},		.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},	
 	{.Lexema = "&&",	.LexemaName = {.Name ="T_E_Logico", 	.Id = T_E_Logico},		.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
 	{.Lexema = "||",	.LexemaName = {.Name ="T_Ou_Logico", 	.Id = T_Ou_Logico},		.LexemaType = {.Name = OPERADOR, .Id = CL_Operador}},
 	
@@ -136,11 +138,18 @@ LexemasReservados dicionarioSimbolosCompostos[] =
 };
 
 
-LexemasReservados LexemaInvalido = {.Lexema = "", .LexemaName = {.Name ="T_Invalido", .Id = T_Invalido}, .LexemaType = {.Name = INVALIDO, .Id = CL_Invalido}};
 
-LexemasReservados LexemaIdentificador = {.Lexema = "", .LexemaName = {.Name ="T_Identificador", .Id = T_Identificador},	.LexemaType = {.Name = IDENTIFICADOR, .Id = CL_Identificador}};
+LexemasReservados LexemaNulo = {.Lexema = NULL,	.LexemaName = {.Name ="", .Id = 0}, .LexemaType = {.Name ="", .Id = 0}};
 
-LexemasReservados LexemaNulo = {.Lexema = NULL,	.LexemaName = {.Name ="", .Id = 0},	.LexemaType = {.Name ="", .Id = 0}};
+LexemasReservados LexemaInvalido				= {.Lexema = "",	.LexemaName = {.Name ="T_Invalido",				.Id = T_Invalido},				.LexemaType = {.Name = INVALIDO,				.Id = CL_Invalido}};
+
+LexemasReservados LexemaConstanteTexto			= {.Lexema = "",	.LexemaName = {.Name ="T_ConstanteTexto",		.Id = T_ConstanteTexto},		.LexemaType = {.Name = CONSTANTE_TEXTO,			.Id = CL_ConstanteTexto}};
+
+LexemasReservados LexemaIdentificadorString		= {.Lexema = "",	.LexemaName = {.Name ="T_IdentificadorString",	.Id = T_IdentificadorString},	.LexemaType = {.Name = IDENTIFICADOR_STRING,	.Id = CL_IdentificadorString}};
+
+LexemasReservados LexemaIdentificadorNumerico	= {.Lexema = "",	.LexemaName = {.Name ="T_IdentificadorNumerico",.Id = T_IdentificadorNumerico},	.LexemaType = {.Name = IDENTIFICADOR_NUMERICO,	.Id = CL_IdentificadorNumerico}};
+
+
 
 
 
@@ -199,10 +208,10 @@ unsigned int ProcurarSimbolo(char *string)
 	
 	// Para só então Procurar dentre os Símbolos Simples
 	indice = 0;
-	auxiliar = *string;
+	//auxiliar = (char)*string;
 	while(dicionarioSimbolosSimples[indice].Lexema != NULL)
 	{
-		if(*dicionarioSimbolosSimples[indice].Lexema == auxiliar)
+		if(*dicionarioSimbolosSimples[indice].Lexema == (char)*string)
 		{
 			return dicionarioSimbolosSimples[indice].LexemaName.Id;
 		}
@@ -215,11 +224,11 @@ unsigned int ProcurarSimbolo(char *string)
 
 
 
-Lexemas CriarLexemaIdentificador(char* string)
+Lexemas CriarLexemaIdentificadorString(char* string)
 {
 	Lexemas lexema;
 	
-	lexema.LexemaId = T_Identificador;
+	lexema.LexemaId = T_IdentificadorString;
 	lexema.Identificador = string;
 		
 	return lexema;
@@ -227,12 +236,36 @@ Lexemas CriarLexemaIdentificador(char* string)
 
 
 
-Lexemas CriarLexemaInvalido()
+Lexemas CriarLexemaConstanteTexto(char* string)
+{
+	Lexemas lexema;
+	
+	lexema.LexemaId = T_ConstanteTexto;
+	lexema.Identificador = string;
+		
+	return lexema;
+}
+
+
+
+Lexemas CriarLexemaIdentificadorNumerico(char* string)
+{
+	Lexemas lexema;
+	
+	lexema.LexemaId = T_IdentificadorNumerico;
+	lexema.Identificador = string;
+		
+	return lexema;
+}
+
+
+
+Lexemas CriarLexemaInvalido(char* string)
 {
 	Lexemas lexema;
 	
 	lexema.LexemaId = T_Invalido;
-	lexema.Identificador = NULL;
+	lexema.Identificador = string;
 		
 	return lexema;
 }
@@ -251,27 +284,58 @@ Lexemas CriarLexemaNulo()
 
 
 
-boolean VerificarIdentificador(char *string)
+boolean EhIdentificadorString(char *string)
 {
 	// Verifica se o Primeiro Caractere do Identificador é válido
 	if(
-		!(*string >= PRIMEIRA_LETRA_MAIUSCULA_VALIDA && *string <= ULTIMA_LETRA_MAIUSCULA_VALIDA) &&
-		!(*string >= PRIMEIRA_LETRA_MINUSCULA_VALIDA && *string <= ULTIMA_LETRA_MINUSCULA_VALIDA) &&
-		!(*string == UNDERLINE)
+		!((char)*string >= PRIMEIRA_LETRA_MAIUSCULA_VALIDA && (char)*string <= ULTIMA_LETRA_MAIUSCULA_VALIDA) &&
+		!((char)*string >= PRIMEIRA_LETRA_MINUSCULA_VALIDA && (char)*string <= ULTIMA_LETRA_MINUSCULA_VALIDA) &&
+		!((char)*string == UNDERLINE)
 	)
 	{
 		return FALSE;
 	}
 	
 	string++;	
-	while(*string)
+	while((char)*string)
 	{
 		if(
-			(*string >= PRIMEIRA_LETRA_MAIUSCULA_VALIDA && *string <= ULTIMA_LETRA_MAIUSCULA_VALIDA) ||
-			(*string >= PRIMEIRA_LETRA_MINUSCULA_VALIDA && *string <= ULTIMA_LETRA_MINUSCULA_VALIDA) ||
-			(*string >= PRIMEIRO_NUMERO_VALIDO && *string <= ULTIMO_NUMERO_VALIDO) ||
-			(*string == UNDERLINE)
+			((char)*string >= PRIMEIRA_LETRA_MAIUSCULA_VALIDA && (char)*string <= ULTIMA_LETRA_MAIUSCULA_VALIDA) ||
+			((char)*string >= PRIMEIRA_LETRA_MINUSCULA_VALIDA && (char)*string <= ULTIMA_LETRA_MINUSCULA_VALIDA) ||
+			((char)*string >= PRIMEIRO_NUMERO_VALIDO && (char)*string <= ULTIMO_NUMERO_VALIDO) ||
+			((char)*string == UNDERLINE)
 		)
+		{
+			string++;
+			continue;
+		}
+		
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+
+
+boolean EhConstanteTexto(char *string)
+{
+	// Verifica se o Primeiro Caractere é Aspa Dupla
+	if((char)*string == '\"')
+	{
+		return TRUE;
+	}
+	
+	return FALSE;
+}
+
+
+
+boolean EhIdentificadorNumerico(char *string)
+{
+	while((char)*string)
+	{
+		if(((char)*string >= PRIMEIRO_NUMERO_VALIDO && (char)*string <= ULTIMO_NUMERO_VALIDO) || (char)*string == '.')
 		{
 			string++;
 			continue;
@@ -287,9 +351,9 @@ boolean VerificarIdentificador(char *string)
 
 boolean EhUmNumero(char* string)
 {
-	while(*string)
+	while((char)*string)
 	{
-		if(*string >= PRIMEIRO_NUMERO_VALIDO && *string <= ULTIMO_NUMERO_VALIDO)
+		if((char)*string >= PRIMEIRO_NUMERO_VALIDO && (char)*string <= ULTIMO_NUMERO_VALIDO)
 		{
 			string++;
 			continue;
@@ -326,10 +390,22 @@ LexemasReservados ObterLexemaReservado(unsigned int lexemaId)
 {	
 	unsigned int indice = 0;
 	
-	// Verifica se é um Lexema Identificador
-	if(lexemaId == T_Identificador)
+	// Verifica se é um Lexema Constante de Texto
+	if(lexemaId == T_ConstanteTexto)
 	{
-		return LexemaIdentificador;
+		return LexemaConstanteTexto;
+	}
+	
+	// Verifica se é um Lexema Identificador String
+	if(lexemaId == T_IdentificadorString)
+	{
+		return LexemaIdentificadorString;
+	}
+	
+	// Verifica se é um Lexema Identificador Numerico
+	if(lexemaId == T_IdentificadorNumerico)
+	{
+		return LexemaIdentificadorNumerico;
 	}
 	
 	// Verifica se é um Lexema Inválido

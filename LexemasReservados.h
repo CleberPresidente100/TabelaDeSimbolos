@@ -6,13 +6,17 @@
 	unsigned int IdentificarLexema(char* string);
 	unsigned int ProcurarSimbolo(char *string);
 	unsigned int ProcurarPalavraReservada(char *string);
-	Lexemas CriarLexemaIdentificador(char *string);
-	Lexemas CriarLexemaInvalido();
+	Lexemas CriarLexemaIdentificadorString(char *string);
+	Lexemas CriarLexemaIdentificadorNumerico(char *string);
+	Lexemas CriarLexemaInvalido(char *string);
 	Lexemas CriarLexemaNulo();
-	boolean VerificarIdentificador(char *string);
+	boolean EhIdentificadorString(char *string);
+	boolean EhIdentificadorNumerico(char *string);
 	boolean EhUmSimboloComposto(unsigned int lexemaId);
 	boolean EhUmNumero(char* string);
 	LexemasReservados ObterLexemaReservado(unsigned int lexemaId);
+	boolean EhConstanteTexto(char *string);
+	Lexemas CriarLexemaConstanteTexto(char* string);
 
 #endif
 
