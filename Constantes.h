@@ -10,17 +10,22 @@
 	
 	
 	// Constantes de Scopo
-	#define GLOBAL_COD 1
-	#define GLOBAL_DESCRICAO "Global"
-	#define LOCAL_COD 2
-	#define LOCAL_DESCRICAO "Local"
+	#define ESCOPO_GLOBAL 1
+	#define ESCOPO_GLOBAL_DESCRICAO "Global"
+	#define ESCOPO_LOCAL 2
+	#define ESCOPO_LOCAL_DESCRICAO "Local"
 	
 	// Arquivos
 	#define MODO_LEITURA "r"
 	#define MODO_GRAVACAO "w"
 	
+	// Estrutura da Tabela de Símbolos
+	#define TIPO_FUNCAO 1
+	#define TIPO_VARIAVEL 2
+	
 	
 #endif
+
 
 
 

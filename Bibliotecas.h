@@ -1,6 +1,10 @@
 
 #ifndef BIBLIOTECAS
 	#define BIBLIOTECAS 1
+	
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <strings.h>
 		
 	#include "Constantes.h"
 	#include "Enumeracoes.h"

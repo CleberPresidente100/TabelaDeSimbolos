@@ -27,9 +27,10 @@
 	struct LEXEMAS
 	{
 		unsigned int LexemaId;
+		unsigned int LexemaTypeId;
 		
-		// O Campo abaixo é utilizado apenas quando o Lexema for um Identificador		
-		char* Identificador; // Armazena o ponteiro da String do Identificador.
+		// O Campo abaixo é utilizado apenas quando o Lexema for um Identificador/Constante		
+		char* Identificador; // Armazena o ponteiro da String do Identificador/Constante.
 	};
 	typedef struct LEXEMAS Lexemas;
 	
@@ -63,15 +64,16 @@
 	// Estrutura da Tabela de Símbolos
 	struct TABELA_SIMBOLOS
 	{
+		unsigned int Id;
+		unsigned int Tipo;
+		unsigned int ComplementoTipo;
+		unsigned int ModificadorTipo;
 		char* Identificador;
 		long int Endereco;
-		KeyValuePair Tipo;
-		KeyValuePair ComplementoTipo;
-		char* Classe;
-		KeyValuePair Escopo;
+		char Classe; // Função, Variável, Prototipo de Função
+		char Escopo;
 		char* Parametros;
 		boolean Ativa;
-		boolean Utilizada;
 		
 		struct TABELA_SIMBOLOS* Proximo;
 		struct TABELA_SIMBOLOS* Anterior;

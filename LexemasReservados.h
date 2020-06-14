@@ -3,9 +3,9 @@
 #ifndef ARQUIVO_LEXEMAS_RESERVADOS
 	#define ARQUIVO_LEXEMAS_RESERVADOS 1
 		
-	unsigned int IdentificarLexema(char* string);
-	unsigned int ProcurarSimbolo(char *string);
-	unsigned int ProcurarPalavraReservada(char *string);
+	Lexemas IdentificarLexema(char* string);
+	Lexemas ProcurarSimbolo(char *string);
+	Lexemas ProcurarPalavraReservada(char *string);
 	Lexemas CriarLexemaIdentificadorString(char *string);
 	Lexemas CriarLexemaIdentificadorNumerico(char *string);
 	Lexemas CriarLexemaInvalido(char *string);

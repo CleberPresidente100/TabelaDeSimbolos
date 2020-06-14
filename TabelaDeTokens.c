@@ -1,7 +1,4 @@
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <strings.h>
 
 #include "Bibliotecas.h"
 
@@ -173,6 +170,7 @@ Tokens* CriaNovoToken(Lexemas* lexema)
 	novoToken->Proximo = NULL;	
 	novoToken->TokenId = TokenID++;
 	novoToken->Lexema.LexemaId = lexema->LexemaId;
+	novoToken->Lexema.LexemaTypeId = lexema->LexemaTypeId;
 	
 	// Caso exista uma String de Identificador, adiciona a mesma no Token
 	tamanhoString = SizeOf(lexema->Identificador);	

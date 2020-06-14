@@ -1,6 +1,4 @@
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "Bibliotecas.h"
 
@@ -44,7 +42,7 @@ void RealizarAnaliseLexica()
 		
 				
 		// Verifica se o Caractere é um Símbolo		
-		lexemaSimbolo.LexemaId = ProcurarSimbolo(&caractereLido[0]); 
+		lexemaSimbolo = ProcurarSimbolo(&caractereLido[0]); 
 		if(lexemaSimbolo.LexemaId != NULO)
 		{
 			
@@ -78,7 +76,7 @@ void RealizarAnaliseLexica()
 					coluna++;
 					caractereLido[1] = LerCaractereDoArquivo(); // Efetua a Leitura do Próximo Caractere do Arquivo
 					
-					lexemaSimbolo.LexemaId = ProcurarSimbolo(&caractereLido[0]);					
+					lexemaSimbolo = ProcurarSimbolo(&caractereLido[0]);					
 					if(lexemaSimbolo.LexemaId == T_AspaDupla)
 					{
 						ProcessaLexemaLido(&lexemaLido[0], linha, coluna);
@@ -170,7 +168,7 @@ void ProcessaLexemaLido(char *string, unsigned int linha, unsigned int coluna)
 	if(SizeOf(string) > 0)
 	{		
 		// Verifica se o Lexema é uma Palavra Reservada
-		lexema.LexemaId = ProcurarPalavraReservada(string);
+		lexema = ProcurarPalavraReservada(string);
 		if(lexema.LexemaId != NULO)
 		{
 			AdicionarLexemaListaTokens(&lexema, linha, coluna); // Adiciona o Lexema na Tabela de Tokens

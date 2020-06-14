@@ -5,6 +5,9 @@
 	
 	TabelaSimbolos* GetTabelaSimbolos();	
 	void LiberarMemoriaTabelaSimbolos();
+	TabelaSimbolos CriarSimboloNulo();
+	void AdicionarSimboloTabelaDeSimbolos(TabelaSimbolos *tabelaDeSimbolos, char escopo);
+	TabelaSimbolos* CriaNovoSimbolo(TabelaSimbolos *simbolo);
 	
 #endif
 

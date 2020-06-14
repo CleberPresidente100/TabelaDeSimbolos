@@ -1,7 +1,4 @@
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <strings.h>
 
 #include "Bibliotecas.h"
 
@@ -154,52 +151,60 @@ LexemasReservados LexemaIdentificadorNumerico	= {.Lexema = "",	.LexemaName = {.N
 
 
 
-unsigned int IdentificarLexema(char* string)
-{
-	unsigned int lexemaId = NULL;
+Lexemas IdentificarLexema(char* string)
+{	
+	Lexemas lexema;
 	
-	lexemaId = ProcurarPalavraReservada(string);	
-	if(lexemaId != NULO) return lexemaId;
+	lexema = ProcurarPalavraReservada(string);
+	if(lexema.LexemaId != NULO) return lexema;
 	
-	lexemaId = ProcurarSimbolo(string);	
-	if(lexemaId != NULO) return lexemaId;
+	lexema = ProcurarSimbolo(string);	
+	if(lexema.LexemaId != NULO) return lexema;
 	
-	return lexemaId;	
+	return lexema;
 }
 
 
 
-unsigned int ProcurarPalavraReservada(char *string)
+Lexemas ProcurarPalavraReservada(char *string)
 {
 	unsigned int indice = 0;
+	Lexemas lexema = CriarLexemaNulo();
 	
 	// Procura dentre as Palavras Reservadas
 	while(dicionarioPalavrasReservadas[indice].Lexema != NULL)
 	{
 		if(strcmp (dicionarioPalavrasReservadas[indice].Lexema, string) == 0)
 		{
-			return dicionarioPalavrasReservadas[indice].LexemaName.Id;
+			lexema.LexemaId = dicionarioPalavrasReservadas[indice].LexemaName.Id;
+			lexema.LexemaTypeId = dicionarioPalavrasReservadas[indice].LexemaType.Id;
+			return lexema;
 		}
 		
 		indice++;
 	}
 	
-	return NULO;
+	return lexema;
 }
 
 
 
-unsigned int ProcurarSimbolo(char *string)
+//unsigned int ProcurarSimbolo(char *string)
+Lexemas ProcurarSimbolo(char *string)
 {
 	char auxiliar;
 	unsigned int indice = 0;
+	Lexemas lexema = CriarLexemaNulo();
+	
 	
 	// Primeiro Procura dentre os Símbolos Compostos
 	while(dicionarioSimbolosCompostos[indice].Lexema != NULL)
 	{
 		if(strcmp (dicionarioSimbolosCompostos[indice].Lexema, string) == 0)
 		{
-			return dicionarioSimbolosCompostos[indice].LexemaName.Id;
+			lexema.LexemaId = dicionarioSimbolosCompostos[indice].LexemaName.Id;
+			lexema.LexemaTypeId = dicionarioSimbolosCompostos[indice].LexemaType.Id;
+			return lexema;
 		}
 		
 		indice++;
@@ -213,13 +218,15 @@ unsigned int ProcurarSimbolo(char *string)
 	{
 		if(*dicionarioSimbolosSimples[indice].Lexema == (char)*string)
 		{
-			return dicionarioSimbolosSimples[indice].LexemaName.Id;
+			lexema.LexemaId = dicionarioSimbolosSimples[indice].LexemaName.Id;
+			lexema.LexemaTypeId = dicionarioSimbolosSimples[indice].LexemaType.Id;
+			return lexema;
 		}
 		
 		indice++;
 	}
 	
-	return NULO;
+	return lexema;
 }
 
 
