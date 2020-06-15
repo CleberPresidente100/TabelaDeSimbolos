@@ -56,7 +56,7 @@
 		T_AspaDupla,
 		T_AspaSimples,
 		T_Ponto,
-		T_Virgula,
+		T_Virgula,//40
 		T_PontoVingula,	
 		T_Barra,	
 		

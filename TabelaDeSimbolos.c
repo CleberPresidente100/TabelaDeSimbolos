@@ -37,7 +37,7 @@ TabelaSimbolos CriarSimboloNulo()
 	tabelaSimbolos.Endereco = NULO; //
 	tabelaSimbolos.Classe = NULO;
 	tabelaSimbolos.Escopo = NULO; //
-	tabelaSimbolos.Parametros = NULL; //
+	tabelaSimbolos.ListaParametros = NULL; //
 	tabelaSimbolos.Ativa = FALSE; //
 	tabelaSimbolos.Anterior = NULL;
 	tabelaSimbolos.Proximo = NULL;
@@ -47,7 +47,7 @@ TabelaSimbolos CriarSimboloNulo()
 
 
 
-void AdicionarSimboloTabelaDeSimbolos(TabelaSimbolos *simbolo, char escopo)
+TabelaSimbolos* AdicionarSimboloTabelaDeSimbolos(TabelaSimbolos *simbolo, char escopo)
 {
 	TabelaSimbolos* novoSimbolo;
 	TabelaSimbolos* tabelaDeSimbolosAuxiliar;
@@ -60,7 +60,7 @@ void AdicionarSimboloTabelaDeSimbolos(TabelaSimbolos *simbolo, char escopo)
 	if(tabelaDeSimbolos == NULL)
 	{		
 		tabelaDeSimbolos = novoSimbolo;
-		return;
+		return novoSimbolo;
 	}
 	
 	tabelaDeSimbolosAuxiliar = tabelaDeSimbolos;
@@ -100,7 +100,7 @@ TabelaSimbolos* CriaNovoSimbolo(TabelaSimbolos *simbolo)
 	novoSimbolo->Escopo = simbolo->Escopo;
 	novoSimbolo->Classe = simbolo->Classe;
 	novoSimbolo->Ativa = simbolo->Ativa;
-	novoSimbolo->Parametros = simbolo->Parametros;
+	novoSimbolo->ListaParametros = simbolo->ListaParametros;
 	
 	
 	//novoSimbolo->Endereco

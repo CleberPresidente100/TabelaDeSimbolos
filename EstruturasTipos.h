@@ -4,13 +4,22 @@
 		
 	typedef char boolean;
 	
-		
+	typedef struct KEY_VALUE_PAIR KeyValuePair;
+	typedef struct LEXEMAS_RESERVADOS LexemasReservados;
+	typedef struct LEXEMAS Lexemas;
+	typedef struct TOKENS Tokens;
+	typedef struct ERROS Erros;
+	typedef struct TABELA_SIMBOLOS TabelaSimbolos;
+	typedef struct PARAMETROS Parametros;
+	
+	
+	
+	// ESTRUTURA PAR DE CHAVE-VALOR	
 	struct KEY_VALUE_PAIR
 	{
 		char* Name;
 		unsigned int Id;
 	};
-	typedef struct KEY_VALUE_PAIR KeyValuePair;
 	
 	
 	// Estrutura dos Lexemas Reservados
@@ -19,8 +28,7 @@
 		char* Lexema;
 		KeyValuePair LexemaName;
 		KeyValuePair LexemaType;
-	};
-	typedef struct LEXEMAS_RESERVADOS LexemasReservados;
+	};	
 	
 	
 	// Estrutura do Lexema que será armazenado no Token.
@@ -32,7 +40,6 @@
 		// O Campo abaixo é utilizado apenas quando o Lexema for um Identificador/Constante		
 		char* Identificador; // Armazena o ponteiro da String do Identificador/Constante.
 	};
-	typedef struct LEXEMAS Lexemas;
 	
 	
 	// Estrutura da Lista de Tokens
@@ -45,7 +52,6 @@
 		struct TOKENS* Anterior;
 		struct TOKENS* Proximo;
 	};
-	typedef struct TOKENS Tokens;
 	
 	
 	// Estrutura da Lista de Erros
@@ -58,7 +64,6 @@
 		struct ERROS* Anterior;
 		struct ERROS* Proximo;
 	};
-	typedef struct ERROS Erros;
 		
 	
 	// Estrutura da Tabela de Símbolos
@@ -72,14 +77,23 @@
 		long int Endereco;
 		char Classe; // Função, Variável, Prototipo de Função
 		char Escopo;
-		char* Parametros;
+		Parametros* ListaParametros;
 		boolean Ativa;
 		
 		struct TABELA_SIMBOLOS* Proximo;
 		struct TABELA_SIMBOLOS* Anterior;
 		
 	};
-	typedef struct TABELA_SIMBOLOS TabelaSimbolos;
+	
+	
+	// Estrutura da Lista de Parâmetros
+	struct PARAMETROS
+	{
+		TabelaSimbolos* ParametroEnderecoSimbolo;
+		
+		struct PARAMETROS* Anterior;
+		struct PARAMETROS* Proximo;
+	};
 
 #endif
 

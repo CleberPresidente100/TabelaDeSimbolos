@@ -19,9 +19,10 @@
 	#define MODO_LEITURA "r"
 	#define MODO_GRAVACAO "w"
 	
-	// Estrutura da Tabela de Símbolos
-	#define TIPO_FUNCAO 1
-	#define TIPO_VARIAVEL 2
+	// Estrutura da Tabela de Símbolos	
+	#define CLASSE_FUNCAO 1
+	#define CLASSE_VARIAVEL 2
+	#define CLASSE_PROTOTIPO_FUNCAO 3
 	
 	
 #endif

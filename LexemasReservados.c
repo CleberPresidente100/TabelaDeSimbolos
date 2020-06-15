@@ -236,6 +236,7 @@ Lexemas CriarLexemaIdentificadorString(char* string)
 	Lexemas lexema;
 	
 	lexema.LexemaId = T_IdentificadorString;
+	lexema.LexemaTypeId = T_IdentificadorString;
 	lexema.Identificador = string;
 		
 	return lexema;
@@ -248,6 +249,7 @@ Lexemas CriarLexemaConstanteTexto(char* string)
 	Lexemas lexema;
 	
 	lexema.LexemaId = T_ConstanteTexto;
+	lexema.LexemaTypeId = T_ConstanteTexto;
 	lexema.Identificador = string;
 		
 	return lexema;
@@ -260,6 +262,7 @@ Lexemas CriarLexemaIdentificadorNumerico(char* string)
 	Lexemas lexema;
 	
 	lexema.LexemaId = T_IdentificadorNumerico;
+	lexema.LexemaTypeId = T_IdentificadorNumerico;
 	lexema.Identificador = string;
 		
 	return lexema;
@@ -272,6 +275,7 @@ Lexemas CriarLexemaInvalido(char* string)
 	Lexemas lexema;
 	
 	lexema.LexemaId = T_Invalido;
+	lexema.LexemaTypeId = T_Invalido;
 	lexema.Identificador = string;
 		
 	return lexema;
@@ -284,6 +288,7 @@ Lexemas CriarLexemaNulo()
 	Lexemas lexema;
 	
 	lexema.LexemaId = NULO;
+	lexema.LexemaTypeId = NULO;
 	lexema.Identificador = NULL;
 		
 	return lexema;

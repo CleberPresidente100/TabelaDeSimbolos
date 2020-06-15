@@ -116,7 +116,9 @@ int main(int argc, char** argv) {
 //	RealizarAnaliseSintatica();
 	//CriaArquivoTokens(listaTokens);
 	//CriaArquivoTabelaSimbolos(tabelaDeSimbolos);
-	ExibirTabelaTokens();
+	//ExibirTabelaTokens();
+	
+	RealizarAnaliseSintatica();
 	
 	
 	erroArquivo = FecharArquivo();
