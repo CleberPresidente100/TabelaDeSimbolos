@@ -43,7 +43,10 @@ O Parser(4) está cerca de 98% pronto e a Tabela de Símbolos(5) está sendo pop
 
 Consequentemente, apesar do projeto ainda não ter sido concluído, ele está muito próximo de sua conclusão, restando apenas detalhes no Parser e copiar a lógica de partes do código para se gerar a Tabela de Erros Léxicos e os arquivos para se armazenar a Tabela de Erros Léxicos e a Tabela de Símbolos.
 
+Portanto, eu considero que o projeto, apesar de não ter sido concluído até a data de entrega, atingiu o seu objetivo já que todas as condições para a criação da Tabela de Símbolos já existem no projeto e só falta corrigir alguns detalhes no Parser para finalizar o mesmo (que gera a Tabela de Símbolos Final).
 
+
+OBS.: Foram necessárias mais XX de desenvolvimento para se finalizar o projeto, e terminar de contruir todos os itens da lista acima citada.
 
 
 
